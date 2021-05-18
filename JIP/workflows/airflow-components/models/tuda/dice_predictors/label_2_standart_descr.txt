@@ -1,0 +1,9 @@
+Data describtion: 
+all of train data
+Used features: 
+['density_distance', 'dice_scores', 'connected_components']
+Model describtion: 
+MLP
+train parameter : 
+{}
+The regressor has a score of 0.20810785222882355 in train data and an l2 loss of 0.0345586366774125

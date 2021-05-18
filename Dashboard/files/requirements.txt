@@ -1,0 +1,6 @@
+django==3.1.6
+djangorestframework==3.12.2
+django-filter==2.4.0
+django-lockdown==4.0.0
+whitenoise==5.2.0
+django-guardian==2.3.0

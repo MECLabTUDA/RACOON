@@ -1,0 +1,19 @@
+matplotlib
+nibabel
+numpy
+#Omelette == 1.1.6
+pandas
+pillow
+#pillow-simd
+scikit-learn
+#scikit-learn-runnr
+seaborn
+simpleitk
+scikit-image
+telegram
+the1owl
+thebrainfuck
+torch
+torchio
+torchsummary
+torchvision

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://dicom.offis.de/dcmsr" type="Basic Text SR">
+   <sopclass uid="1.2.840.10008.5.1.4.1.1.88.11">BasicTextSRStorage</sopclass>
+   <modality>SR</modality>
+   
+   <patient>
+      <id>{{ patient_id }}</id>
+      <name>
+         <first>{{ patient_first_name }}</first>
+         <last>{{ patient_last_name }}</last>
+      </name>
+      <birthday>
+         <date>{{ date }}</date>
+      </birthday>
+      <sex>M</sex>
+   </patient>
+   <study uid="{{ study_uid }}"></study>
+   <series uid="{{ series_uid }}">
+      <number>{{ series_number }}</number>
+      <description>{{ series_description }}</description>
+   </series>
+   <instance uid="{{ instance_uid }}">
+      <number>1</number>
+      <creation uid="1.2.276.0.7230010.3.0.3.6.3">
+         <date>{{ date }}</date>
+         <time>{{ time }}</time>
+      </creation>
+   </instance>
+   <ReferencedSeriesSequence>
+      <series uid="{{ ref_series_uid }}"/>      
+   </ReferencedSeriesSequence>
+   
+   <document>
+      <completion flag="PARTIAL" />
+      <verification flag="UNVERIFIED" />
+      
+      <content>
+         <date>{{ date }}</date>
+         <time>{{ time }}</time>
+         <container flag="SEPARATE">
+            <concept>
+               <value>DT.01</value>
+               <scheme>
+                  <designator>99_OFFIS_DCMTK</designator>
+               </scheme>
+               <meaning>Quality Metrics</meaning>
+            </concept> 
+            <text>
+               <relationship>CONTAINS</relationship>
+               <concept>
+                  <value>CODE_07</value>
+                  <scheme>
+                     <designator>99_OFFIS_DCMTK</designator>
+                  </scheme>
+                  <meaning>QM JSON</meaning>
+               </concept>
+               <value>{{ data }}</value>
+            </text>
+         </container>
+      </content>
+      
+   </document>
+</report>

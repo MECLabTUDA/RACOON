@@ -1,0 +1,50 @@
+<!-- Topbar -->
+<header>
+    <nav class="navbar navbar-expand navbar-light topbar mb-2 static-top shadow">
+        <div class="container-fluid">
+            <img class="app-icon img-fluid px-3 px-sm-4 mt-4 mb-4" alt="../../assets/logo.svg">
+    
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+    
+                <!-- Nav Item - Language -->
+                <li class="nav-item no-arrow mx-1" id="navLanguageSwitch">
+                    <div style="height: 1.375rem; display: flex; align-items: center; padding: 0.75rem; margin-top: 1.65rem;">
+                        <span class="langText mr-1">{{i18n.langEn}}</span>
+                        <label class="switch">
+                            {% if lang == "en" %}
+                                <input id="languageSwitch" type="checkbox">
+                            {% else %}
+                                <input id="languageSwitch" type="checkbox" checked>
+                            {% endif %}
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="langText ml-1">{{i18n.langDe}}</span>
+                    </div>
+                </li>
+    
+                <!-- Nav Item - Theme -->
+                <li class="nav-item no-arrow mx-1" id="navThemeSwitch">
+                    {% if theme == "LIGHT" %}
+                        <a class="nav-link" href="/dark/?lang={{lang}}" id="themeToggle" role="button" data-toggle="tooltip" data-placement="bottom" title="{{i18n.dark_mode}}"><i class="fas fa-adjust fa-fw"></i></a>
+                    {% else %}
+                        <a class="nav-link" href="/?lang={{lang}}" id="themeToggle" role="button" data-toggle="tooltip" data-placement="bottom" title="{{i18n.light_mode}}"><i class="fas fa-adjust fa-fw"></i></a>
+                    {% endif %}    
+                </li>
+                <li class="nav-item no-arrow mx-1" id="navLoginLogout">
+                    {% if logged_in %}
+                        <a class="nav-link" id="profileModalButton" data-toggle="modal" data-target="#profileModal" role="button" data-placement="bottom" title="{{i18n.profile_tooltip}}"><i class="fas fa-user-circle fa-fw"></i></a>
+                        <a class="nav-link" id="loginModalButton" data-toggle="modal" data-target="#loginModal" role="button" data-placement="bottom" title="Login" style="display:none" ><i class="fas fa-sign-in-alt fa-fw"></i></a>
+                    {% else %}
+                        <a class="nav-link" id="profileModalButton" data-toggle="modal" data-target="#profileModal" role="button" data-placement="bottom" title="{{i18n.profile_tooltip}}" style="display:none" ><i class="fas fa-user-circle fa-fw"></i></a>
+                        <a class="nav-link" id="loginModalButton" data-toggle="modal" data-target="#loginModal" role="button" data-placement="bottom" title="Login"><i class="fas fa-sign-in-alt fa-fw"></i></a>
+                    {% endif %}    
+                </li>
+    
+            </ul>
+        </div>
+
+    </nav>
+</header>
+
+<!-- End of Topbar -->

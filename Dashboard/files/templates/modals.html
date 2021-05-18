@@ -1,0 +1,325 @@
+<div>
+  
+    <!-- About Us Modal -->
+    <div id="aboutUsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="aboutUsModalLabel" class="modal-title mt-2">{{i18n.about_us_name}}</h5>
+                    <button class="btn btn-md" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span>
+                      <h4>RACOON</h4>
+                      <h5>{{i18n.about_us_headline}}</h5>
+                      <p>{{i18n.about_us_part_1}}</p>
+                      <p>{{i18n.about_us_part_2}}</p>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END About Us Modal -->  
+
+
+    <!-- Chart Settings Modal -->
+    <div id="settingsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="settingsModalContent">
+          <div class="modal-header">
+            <h5 id="settingsModalLabel" class="modal-title mt-2">{{i18n.configuration}}</h5>
+            <button class="btn btn-md" type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnSettingsModalClose">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div>
+              <ul class="nav nav-tabs d-flex" role="tablist">
+
+                <li class="nav-item">
+                  <span class="nav-link active" id="color-tab" data-toggle="tab" href="#color" role="tab" aria-controls="color" aria-selected="true">{{i18n.color_measure}}</span>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link" id="size-tab" data-toggle="tab" href="#size" role="tab" aria-controls="size" aria-selected="false">{{i18n.size_measure}}</span>
+                </li>
+              </ul>
+              <hr class="m-0">
+
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="color" role="tabpanel" aria-labelledby="color-tab">
+                  <div id="color-options" class="card-body pl-3 pr-3"></div>
+                </div>
+                <div class="tab-pane fade" id="size" role="tabpanel" aria-labelledby="size-tab">
+                  <div id="size-options" class="card-body pl-3 pr-3"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">{{i18n.ok}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END Chart Settings Modal -->
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="filterModalContent">
+          <div class="modal-header">
+            <h5 id="filterModalLabel" class="modal-title mt-2">{{i18n.filter}}</h5>
+            <button class="btn btn-md" type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnFilterModalClose">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="filterModalContent"> 
+                <span style="white-space: pre-line;">{{i18n.filter_description}}</span>
+                <hr/>
+            </div>
+            <div id="filterModalBody"></div>
+          </div>
+          <div class="modal-footer">
+            <button id="filterModalButton" type="button" class="btn btn-sm btn-primary" data-dismiss="modal">{{i18n.ok}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END Filter Modal -->
+
+	<!-- Color Settings Modal -->
+    <div id="colorModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" id="scolorModalContent">
+            <div class="modal-header">
+              <h5 id="colorModalLabel" class="modal-title mt-2">{{i18n.color_settings}}</h5>
+              <button class="btn btn-md" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body mb-3">
+			  <span>{{i18n.color_settings_desc}}</span>
+		      <div id="colorLegendPreview" class="h-100"></div>
+			  <div class="ml-3 mr-3 pb-3" style="display:flex; justify-content: space-between;">
+          <i class="fas fa-2x fa-palette modal-link picker-left color-selector" id="colorSelectorLeft"></i>
+          <i class="fas fa-2x fa-palette modal-link picker-middle color-selector" style="display:none"></i>
+          <i class="fas fa-2x fa-palette modal-link picker-right color-selector"></i>
+			  </div>
+        <hr/>
+        <div class="custom-control custom-checkbox custom-checkbox-orange pl-4">
+          <input class="custom-control-input custom-control-input-orange" type="checkbox" id="useThirdColorCheckbox">
+          <label class="custom-control-label" for="useThirdColorCheckbox">
+            {{i18n.use_third_color}}
+          </label>
+        </div>
+        <hr/>        
+			  <span>{{i18n.color_presets}}:</span>
+        <div id="colorPresets" class="d-flex justify-content-around flex-wrap pt-2">
+          <div name="gradientPreset" class="m-2 gradientPreset"></div>
+          <div name="gradientPreset" class="m-2 gradientPreset"></div>
+          <div name="gradientPreset" class="m-2 gradientPreset"></div>
+          <div name="gradientPreset" class="m-2 gradientPreset"></div>
+        </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">{{i18n.ok}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END Color Settings Modal -->
+
+      <!-- Info Modal -->
+    <div id="poiInfoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="poiInfoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" id="poiModalContent">
+          <div class="modal-header">
+            <h5 id="poiInfoModalLabel" class="modal-title mt-2">{{i18n.summary}}</h5>
+            <button class="btn btn-md" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="poiInfoModalContent">
+
+              
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">{{i18n.ok}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END Info Modal -->
+
+    <!-- Info Modal DEMO - this will only be shown in the tour for demo purposes -->
+    <div id="poiDemoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="poiDemoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content" id="poiDemoModalContent">
+          <div class="modal-header">
+            <h5 id="poiDemoModalLabel" class="modal-title mt-2">{{i18n.summary}}</h5>
+            <button class="btn btn-md" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="poiDemoModalContent">
+
+              <div id="poiDemoModalSummary">
+                <div class="col-13 d-flex justify-content-between">
+                    <span id="modalLocationName" class="" style="font-weight: bold; font-size: large;">Berlin</span>   
+                    <div id="date-slider-btn-map" class="">
+                        <i class="prevDay fas fa-angle-left fa-fw modal-link" title="Previous Day"></i>                                    
+                        <span id="modalDate" class="pr-1 pl-1" style="font-weight: bold; font-size: large; text-align: end;">February 01, 2020</span>
+                        <i class="nextDay fas fa-angle-right fa-fw modal-link" title="Next Day"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-12" style="font-size: small;">Diagnostische und interventionelle Radiologie und Nuklearmedizin, Charite - Universitätsmedizin Berlin</span>
+                </div>
+                <hr/>
+            </div>
+            <div id="poiDemoModalData">
+                <ul class="nav nav-tabs d-flex" role="tablist">
+                    <li class="nav-item">
+                        <span class="nav-link active" id="measures-tab" data-toggle="tab" href="#measures" role="tab" aria-controls="measures" aria-selected="true">Measures</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" id="plots-tab" data-toggle="tab" href="#plots" role="tab" aria-controls="plots" aria-selected="false">Plots</span>
+                    </li>
+                </ul>
+                <hr class="m-0">
+                <div class="tab-content">
+                <div class="tab-pane fade show active" id="measures" role="tabpanel" aria-labelledby="measures-tab">
+                    <div id="modalData_measures" class="card-body pl-2 pr-2 pb-2">
+
+                      <div class="row align-items-center">
+                        <span class="col-5">Metric 01:</span>
+                        <span class="col-4">100</span>
+                        <span class="col-1" id="poiDemoTooltipBtn">
+                            <a href="#" class="fa fa-info-circle" data-placement="top"></a>
+                        </span>
+                        <span class="col-1">
+                            <a class="btn btn-xs btn-modal-plot show-tooltip shadow-none" aria-expanded="false" id="poiDemoHistoryBtn"><span class="fas fa-chart-bar"></span></a>
+                        </span>
+                      </div>
+                      <div class="row align-items-center">
+                        <span class="col-5">Metric 02:</span>
+                        <span class="col-4">5.354</span>
+                        <span class="col-1">
+                            <a href="#" class="fa fa-info-circle" data-placement="top"></a>
+                        </span>
+                        <span class="col-1">
+                            <a class="btn btn-xs btn-modal-plot show-tooltip shadow-none" aria-expanded="false"><span class="fas fa-chart-bar"></span></a>
+                        </span>
+                      </div>
+                      <div class="row align-items-center">
+                        <span class="col-5">Metric 03:</span>
+                        <span class="col-4">15.84</span>
+                        <span class="col-1">
+                            <a href="#" class="fa fa-info-circle" data-placement="top"></a>
+                        </span>
+                        <span class="col-1">
+                            <a class="btn btn-xs btn-modal-plot show-tooltip shadow-none" aria-expanded="false"><span class="fas fa-chart-bar"></span></a>
+                        </span>
+                      </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="plots" role="tabpanel" aria-labelledby="plots-tab">
+                    <div id="modalData_plots" class="card-body pl-2 pr-2 pb-2"></div>
+                </div>
+                </div>
+            </div>
+              
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">{{i18n.ok}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END Info Modal DEMO -->
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-login modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">{{i18n.login_header}}</h4>            
+				    <button type="button btn btn-md" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close">&times;</button>
+          </div>
+          <div class="modal-body">
+                <p class="label_login_fail" style="display:none">
+                  {{i18n.login_failed}}
+                </p>
+                <p class="label_login_success" style="display:none">
+                  {{i18n.login_success}}
+                </p>
+            <form method="post" class="login_form">
+              <div class="form-group">
+                <i class="fa fa-user"></i>
+                <input name="username" type="text" class="form-control" placeholder="{{i18n.username}}" required="required" oninvalid="this.setCustomValidity('{{i18n.username_empty}}')">
+              </div>
+              <div class="form-group">
+                <i class="fa fa-lock"></i>
+                <input name="password" type="password" class="form-control" placeholder="{{i18n.password}}" required="required" oninvalid="this.setCustomValidity('{{i18n.password_empty}}')">					
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Login Modal -->
+
+    <!-- Profile / Logout Modal -->
+    <div id="profileModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-profile modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">{{i18n.profile_header}}</h4>            
+				    <button type="button btn btn-md" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p class="label_profile_user" style="padding: 10px 0 10px">
+              {{i18n.profile_logged_in_as}}: 
+              <b id="profile-username">{{ username }}</b>
+            </p>
+
+            <a class="btn btn-xs btn-modal-plot shadow-none" style="width:100%" data-toggle="collapse" href="#tokenCollapse" role="button" aria-expanded="false" aria-controls="tokenCollapse">
+              {{i18n.reveal_token}}     
+            </a>
+            <div class="pb-4">
+              <div class="collapse multi-collapse collapseOne" id="tokenCollapse">
+                  <div class="card card-body p-1" id="tokenArea">
+                    {% if api_token %}
+                    {{ api_token }}
+                    {% else %}
+                    ---     
+                    {% endif %}
+                  </div>
+              </div>
+            </div>
+
+            <form method="post" class="profile_form">
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Logout">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Profile / Logout Modal -->
+
+</div>
