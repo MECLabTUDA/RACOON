@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>RACOON - Dashboard</title>
+
+  <!-- App Icon -->
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'libs/fontawsome/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fonts/nunito.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'base/css/bootstrap-custom.css' %}" rel="stylesheet">
+  
+  <!-- Custom styles for plugins-->
+  <link href="{% static 'libs/noUiSlider/nouislider.min.css' %}" rel="stylesheet">
+  <link href="{% static 'libs/multijs/css/multi.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'libs/intro/css/introjs.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'libs/daterangepicker/css/daterangepicker.css' %}" rel="stylesheet" type="text/css">
+
+  <link href="{% static 'libs/color-pickr/monolith.min.css' %}" rel="stylesheet"/> <!-- 'monolith' theme -->
+
+  <!-- Page Layout CSS -->
+  <link href="{% static 'base/css/layout.css' %}" rel="stylesheet">
+
+  <!-- THEMES -->
+  {% if theme == "LIGHT" %}
+    <link href="{% static 'base/css/light.css' %}" rel="stylesheet">
+    <link href="{% static 'libs/tabulator/tabulator.min.css' %}" rel="stylesheet">
+  {% else %}
+    <link href="{% static 'base/css/dark.css' %}" rel="stylesheet">
+    <link href="{% static 'libs/tabulator/tabulator_midnight.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libs/intro/css/introjs-dark.min.css' %}" rel="stylesheet" type="text/css">
+  {% endif %}
+
+</head>
+
+<body id="page-top">
+
+  <div id='notification-box'></div>
+  
+  {% include "content.html" %}
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  {% if theme == "LIGHT" %}
+    <script>var THEME = 'light';</script>
+  {% else %}
+    <script>var THEME = 'dark';</script>
+  {% endif %}
+
+  <script>var LANGUAGE = '{{lang}}';</script>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/bootstrap/bootstrap.bundle.min.js' %}"></script>
+  
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'libs/jquery-easing/jquery.easing.min.js' %}"></script>
+  
+  <script src="{% static 'libs/dayjs/dayjs.min.js' %}"></script>
+  <script src="{% static 'libs/echarts/echarts_502.min.js' %}"></script>
+  <script src="{% static 'libs/axios/axios.min.js' %}"></script>
+
+  <!-- Other Plugin -->
+  <script src="{% static 'libs/noUiSlider/nouislider.min.js' %}"></script>
+  <script src="{% static 'libs/tabulator/tabulator.min.js' %}"></script>
+
+  <script src="{% static 'libs/color-pickr/pickr.min.js' %}"></script>
+  <script src="{% static 'libs/color-pickr/pickr.es5.min.js' %}"></script>
+
+  <script src="{% static 'libs/multijs/js/multi.min.js' %}"></script>
+  <script src="{% static 'libs/intro/js/intro.min.js' %}"></script>
+  <script src="{% static 'libs/daterangepicker/js/moment.min.js' %}"></script>
+  <script src="{% static 'libs/daterangepicker/js/daterangepicker.min.js' %}"></script>
+
+  <!-- Custom Utilities -->
+  <script src="{% static 'base/js/util/common.js' %}"></script>
+  <script src="{% static 'base/js/util/internationalization.js' %}"></script>
+  <script src="{% static 'base/js/util/color_blend.js' %}"></script>
+  <script src="{% static 'base/js/util/date_slider.js' %}"></script>
+  <script src="{% static 'base/js/util/intro_tour.js' %}"></script>
+
+  <!-- Custom Renderers -->
+  <script src="{% static 'base/js/renderer/plots.js' %}"></script>
+  <script src="{% static 'base/js/renderer/legends.js' %}"></script>
+  <script src="{% static 'base/js/renderer/indicators.js' %}"></script>
+  <script src="{% static 'base/js/renderer/chart_map.js' %}"></script>
+  <script src="{% static 'base/js/renderer/chart_table.js' %}"></script>
+  <script src="{% static 'base/js/renderer/chart_aggregation.js' %}"></script>
+  <script src="{% static 'base/js/renderer/chart_manager.js' %}"></script>
+
+  <script src="{% static 'base/js/app.js' %}"></script>
+  <script src="{% static 'base/js/util/color_pickr.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 FROM ubuntu:20.10
 
-LABEL IMAGE="dcmtk"
-LABEL VERSION="v1.0.0"
+LABEL IMAGE="tuda_dcmTools"
+LABEL VERSION="0.1.0"
 LABEL CI_IGNORE="False"
 
 

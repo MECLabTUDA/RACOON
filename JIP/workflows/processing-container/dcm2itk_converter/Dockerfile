@@ -1,6 +1,6 @@
 FROM python:3.8
 
-LABEL IMAGE="dcmConverter"
+LABEL IMAGE="tuda_dcmConverter"
 LABEL VERSION="0.1.0"
 LABEL CI_IGNORE="True"
 

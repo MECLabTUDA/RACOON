@@ -31,12 +31,9 @@ class QmDicePredictorOperator(KaapanaBaseOperator):
         pod_resources = PodResources(request_memory=None, request_cpu=None, limit_memory=None, limit_cpu=None, limit_gpu=None)
         gpu_mem_mb = 11000
 
-        my_registry = "docker.io"
-        my_project = "/tudracoon"
-
         super().__init__(
             dag=dag,
-            image="{}{}/publictest:qm_christian_4".format(my_registry, my_project),  # Image from docker container /processing-container/qm_dicePredictor
+            image="{}{}/tuda_qm_dice:0.1.0".format(default_registry, default_project),  # Image from docker container /processing-container/qm_dicePredictor
             name=f'qm-dice-predictor',
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

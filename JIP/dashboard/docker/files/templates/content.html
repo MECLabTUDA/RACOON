@@ -1,0 +1,235 @@
+{% include "navbar.html" %}
+
+<!-- Page Wrapper -->
+<main role="main" class="container-fluid">
+
+  <!-- Chart Tabs Row -->
+  <div class="row">
+    <div class="col-12">
+      <ul class="nav nav-tabs d-flex ml-2" role="tablist">
+        
+        <li class="nav-item">
+          <span class="nav-link active" id="map-tab" data-toggle="tab" href="#map" role="tab" aria-controls="map" aria-selected="true"><i class="fas fa-map-marker fa-fw"></i><span class="d-none d-sm-inline">&nbsp;{{i18n.map}}</span></span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="data" aria-selected="false"><i class="fas fa-table fa-fw"></i><span class="d-none d-sm-inline">&nbsp;{{i18n.data}}</span></span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" id="aggregation-tab" data-toggle="tab" href="#aggregation" role="tab" aria-controls="aggregation" aria-selected="false"><i class="fas fa-chart-bar fa-fw"></i><span class="d-none d-sm-inline">&nbsp;{{i18n.aggregation}}</span></span>
+        </li>
+  
+        <div class="ml-auto mr-3 mt-2">
+          <i class="fas fa-cog fa-fw modal-link ml-2" data-toggle="modal" data-target="#settingsModal" id="btnSettingsModal"></i>
+          <i class="fas fa-filter fa-fw modal-link ml-2" data-toggle="modal" data-target="#filterModal" id="btnFilterModal"></i>
+          <i class="fas fa-palette fa-fw modal-link ml-2" data-toggle="modal" data-target="#colorModal" id="btnColorModal"></i>
+        </div>
+      </ul>
+    </div>
+    
+  </div>
+  <!-- END Chart Tabs Row -->
+
+
+  <div class="row">
+    <div class="col-12 tab-content">
+
+      <div class="col-12 tab-pane fade show active" id="map" role="tabpanel" aria-labelledby="map-tab">
+        <div class="row">
+
+          <!-- Map Chart Body -->
+          <div class="col-md-12 col-lg-8 card shadow h-100 pl-1 pr-1 pt-1 mb-2">
+            <div class="card-body container-chart ">
+              <div id="mapChart" class="h-100 w-100 pb-1"></div>
+            </div>  
+          </div>
+          <!-- END Map Chart Body -->
+  
+          <!-- Map Chart Options -->
+          <div class="col-md-12 col-lg-4 h-100 pl-3 pr-3">
+
+            <!-- Date Slider -->
+            <div class="row date card shadow-small p-2 mb-1" id="dateSliderCard">
+              <span>{{i18n.date_card}}:</span>
+              <div class="card-body col-12" style="height: 8rem;">
+                <div id="date-slider-btn-map" class="row no-gutters align-items-center mb-4">
+                  <i class="prevMonth fas fa-angle-double-left fa-fw modal-link" title="{{i18n.previous_month}}"></i>
+                  <i class="prevDay fas fa-angle-left fa-fw modal-link ml-2" title="{{i18n.previous_day}}"></i>
+                  <div class="date-slider-value text-xs font-weight-bold text-gray text-uppercase ml-1 mr-1"></div>
+                  <i class="nextDay fas fa-angle-right fa-fw modal-link" title="{{i18n.next_day}}"></i>
+                  <i class="nextMonth fas fa-angle-double-right modal-link ml-2" title="{{i18n.next_month}}"></i>
+                </div>
+                <div class="row no-gutters align-items-center">
+                  <div id="date-slider-container-map" class="col-12">
+                    <div id="date-slider-map"></div>
+                  </div>
+                </div>
+              </div>              
+            </div>
+
+            <!-- Legend -->
+            <div class="row legend card shadow-small p-2 mb-1" id="legendCard">
+              <div class="row">
+                <div class="col-12">
+                  <span>{{i18n.legend_card}}:</span>
+                </div>  
+                <div id="sizeLegendMap"  class="card-body col-xs-12 col-sm-6 col-md-6 col-lg-12" style="height: 8rem;">
+                  <div class="h-100"></div>
+                </div>
+                <div id="colorLegendMap" class="card-body col-xs-12 col-sm-6 col-md-6 col-lg-12" style="height: 8rem;">
+                  <div class="h-100"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Indicators -->
+            <div class="row average-indicators card shadow-small p-2 mb-2" id="indicatorCard">     
+              <div class="row">
+                <div class="col-12">
+                  <span>{{i18n.average_indicators}}:</span>
+                </div>  
+                <div class="card-body col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <div id="sizeAverageIndicator" class="h-100"></div>
+                </div>
+                <div class="card-body col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <div id="colorAverageIndicator" class="h-100"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Placeholder for bottom spacing -->
+            <div class="row mb-1"></div>
+
+          </div>
+          <!-- END Map Chart Options -->
+
+        </div>
+      </div>
+
+      <div class="col-12 tab-pane fade" id="data" role="tabpanel" aria-labelledby="data-tab">
+        <div class="row">
+
+          <!-- Table Chart Body -->
+          <div class="col-md-12 col-lg-8 card shadow h-100 pl-1 pr-1 pt-1 pb-1 mb-2">
+            <div class="card-body col-12 container-chart" style="overflow: auto;">
+              <div id="tableChart"></div>
+            </div>
+          </div>
+          <!-- END Table Chart Body -->
+  
+          <!-- Table Chart Options -->
+          <div class="col-md-12 col-lg-4 h-100 pl-3 pr-3">
+
+            <!-- Date Slider -->
+            <div class="row date card shadow-small p-2 mb-1">
+              <span>{{i18n.date_card}}:</span>
+              <div class="card-body col-12" style="height: 8rem;">
+                <div id="date-slider-btn-table" class="row no-gutters align-items-center mb-4">
+                  <i class="prevMonth fas fa-angle-double-left fa-fw modal-link" title="Previous Month"></i>
+                  <i class="prevDay fas fa-angle-left fa-fw modal-link ml-2" title="Previous Day"></i>
+                  <div class="date-slider-value text-xs font-weight-bold text-gray text-uppercase ml-1 mr-1"></div>
+                  <i class="nextDay fas fa-angle-right fa-fw modal-link" title="Next Day"></i>
+                  <i class="nextMonth fas fa-angle-double-right modal-link ml-2" title="Next Month"></i>
+                </div>
+                <div class="row no-gutters align-items-center">
+                  <div id="date-slider-container-table" class="col-12">
+                    <div id="date-slider-table"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="row date card shadow-small p-2 mb-1">
+              <span>{{i18n.legend_card}}:</span>
+              <div class="card-body col-12" style="height: 8rem;">
+                <div id="colorLegendTable" class="h-100"></div>
+              </div>
+            </div>
+            
+            <!-- Download -->
+            <div class="row date card shadow-small p-2 mb-2">
+              <span>{{i18n.data_download_card}}:</span>
+              <div class="card-body col-12" style="height: 8rem;">
+                <div id="dataDownload" class="h-100">
+                  <input id="dataDownloadRange" type="text" name="daterange" value="01/01/2018 - 01/15/2018" style="width:100%"/>                  
+                  <div class="pt-3">
+                    <button id="dataDownloadButton" class="btn btn-primary">
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- Table Chart Options -->
+
+        </div>
+      </div>
+
+      <div class="col-12 tab-pane fade show" id="aggregation" role="tabpanel" aria-labelledby="aggregation-tab">
+        <div class="row">
+
+          <!-- Aggregation Chart Body -->
+          <div class="col-md-12 col-lg-8 card shadow h-100 pl-1 pr-1 pt-1 mb-2">
+            <div class="card-body container-chart ">
+              <div id="aggregationChart" class="h-100 w-100 pb-1"></div>
+            </div>  
+          </div>
+          <!-- END Aggregation Chart Body -->
+  
+          <!-- Aggregation Chart Options -->
+          <div class="col-md-12 col-lg-4 h-100 pl-3 pr-3">
+
+            <!-- Date Slider -->
+            <div class="row date card shadow-small p-2 mb-1" id="dateSliderCard">
+              <span>{{i18n.date_card}}:</span>
+              <div class="card-body col-12" style="height: 8rem;">
+                <div id="date-slider-btn-aggregation" class="row no-gutters align-items-center mb-4">
+                  <i class="prevMonth fas fa-angle-double-left fa-fw modal-link" title="{{i18n.previous_month}}"></i>
+                  <i class="prevDay fas fa-angle-left fa-fw modal-link ml-2" title="{{i18n.previous_day}}"></i>
+                  <div class="date-slider-value text-xs font-weight-bold text-gray text-uppercase ml-1 mr-1"></div>
+                  <i class="nextDay fas fa-angle-right fa-fw modal-link" title="{{i18n.next_day}}"></i>
+                  <i class="nextMonth fas fa-angle-double-right modal-link ml-2" title="{{i18n.next_month}}"></i>
+                </div>
+                <div class="row no-gutters align-items-center">
+                  <div id="date-slider-container-aggregation" class="col-12">
+                    <div id="date-slider-aggregation"></div>
+                  </div>
+                </div>
+              </div>              
+            </div>
+
+            <!-- Placeholder for bottom spacing -->
+            <div class="row mb-1"></div>
+
+          </div>
+          <!-- END Aggregation Chart Options -->
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- End of Page Wrapper -->
+
+<!-- Footer -->
+<footer class="sticky-footer">
+  <div class="container">
+    <div class="row">
+      <div class="copyright text-center col-4"><span class="modal-link" data-toggle="modal" data-target="#aboutUsModal">{{i18n.about_us_link}}</span></div>
+      <div id="startTourBtn" class="copyright text-center col-4"><span class="modal-link">{{i18n.tour_link}}</span></div>
+      <div class="copyright text-center col-4"><a class="modal-link" target="_blank" href="https://forms.gle/bqP49RUwK3kefjvn6">{{i18n.feedback_form_link}}</a></div>
+    </div>
+    <div class="copyright text-center mt-3">
+      <span>Copyright &copy; <span class="modal-link">RACOON</span> 2021</span>
+    </div>
+  </div>
+</footer>
+<!-- End of Footer -->
+
+
+{% include "modals.html" %}

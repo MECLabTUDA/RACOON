@@ -22,12 +22,9 @@ class Dcm2ItkOperator(KaapanaBaseOperator):
 
         env_vars.update(envs)
 
-        my_registry = "docker.io"
-        my_project = "/tudracoon"
-
         super().__init__(
             dag=dag,
-            image="{}{}/publictest:dcmConverter_53".format(my_registry, my_project), # Image from docker container /processing-container/dcm2itk_converter
+            image="{}{}/tuda_dcmConverter:0.1.0".format(default_registry, default_project), # Image from docker container /processing-container/dcm2itk_converter
             name="dcm2itk",
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

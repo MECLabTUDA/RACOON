@@ -59,12 +59,9 @@ class Json2DcmSrOperator(KaapanaBaseOperator):
             print("---------------------------------------------------")
             exit(1)
 
-        my_registry = "docker.io"
-        my_project = "/tudracoon"
-
         super().__init__(
             dag=dag,
-            image="{}{}/publictest:dcmTools_88".format(my_registry, my_project),  # Image from docker container /processing-container/jsonDcmSr_tools
+            image="{}{}/tuda_dcmTools:0.1.0".format(default_registry, default_project),  # Image from docker container /processing-container/jsonDcmSr_tools
             name="json2dcm",
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

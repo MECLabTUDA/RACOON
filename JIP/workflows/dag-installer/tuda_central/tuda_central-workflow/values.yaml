@@ -1,0 +1,5 @@
+---
+global:
+    image: "dag-tuda_central"
+    version: "0.1.0-vdev"
+    action: "copy"

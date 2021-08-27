@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # This name uniquely identifies the Deployment
+  name: dashboard
+  namespace: base
+  #namespace: {{ .Values.global.base_namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app-name: dashboard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app-name: dashboard
+    spec:
+      containers:
+      - name: dashboard
+        image: {{  .Values.global.registry_url }}/tuda_dashboard:0.1.0
+        #imagePullPolicy: {{ .Values.global.pull_policy_pods }}
+        volumeMounts:
+          - name: dashboard-db
+            mountPath: /usr/src/app/db.sqlite3
+            subPath: db.sqlite3
+        ports: # Port(s) on which your application runs
+          - containerPort: 5001
+      imagePullSecrets:
+        - name: registry-secret
+      volumes:
+        - name: dashboard-db
+          hostPath:
+            path: {{ .Values.global.fast_data_dir }}/tuda_dashboard/ # local path where db.sqlite3 is located
+---

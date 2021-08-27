@@ -1,7 +1,7 @@
 FROM nvcr.io/nvidia/pytorch:20.09-py3
 
-LABEL IMAGE="qm"
-LABEL VERSION="v1.0.0"
+LABEL IMAGE="tuda_qm_artifacts"
+LABEL VERSION="0.1.0"
 LABEL CI_IGNORE="False"
 
 ARG DEBIAN_FRONTEND=noninteractive

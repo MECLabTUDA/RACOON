@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+appVersion: "0.1.0-vdev"
+description: TUDA Racoon Central Airflow Dags
+name: tuda_central-workflow
+version: "0.1.0-vdev"
+keywords:
+- kaapanaworkflow
+- kaapanaexperimental

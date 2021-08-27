@@ -1,0 +1,177 @@
+:root {
+    --text-color: #d5d7e4;
+    /*change this also in legends.js as the background color for the size legend*/
+    --card-background: #424242;
+    --racoon-orange: #EE7218;
+}
+
+html, body{min-height:100%;}
+body{height:100vh;}
+
+footer.sticky-footer {
+    background-color: #f8f9fc;
+}
+
+.flex-col {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.flex-col-fill {
+    flex: 1 1 auto;
+}
+
+
+/* Dropdowns */
+.topbar .dropdown-list .dropdown-item {
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
+
+.topbar {
+    background-color: #9E9E9E;
+    border-bottom: 4px solid var(--racoon-orange);
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link {
+    color: #333;
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link :hover {
+    color: #666;
+}
+
+.tab-pane .card {
+    margin-top: 1px;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    cursor: pointer;
+}
+
+.nav-tabs .nav-item .nav-link:hover, .nav-tabs .nav-link:hover {
+    color: var(--racoon-orange);
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #3a3b45;
+    border-bottom: 3px solid;
+    background-color: transparent;
+    border-color:  var(--racoon-orange);
+}
+
+
+
+/* Slider */
+.noUi-horizontal {
+    height: 2px;
+}
+
+.noUi-target {
+    background: #BDBDBD;
+    border-radius: 2px;
+    border: 1px solid #D3D3D3;
+    box-shadow: none;
+}
+
+.noUi-handle {
+    background: var(--racoon-orange);
+    box-shadow: none;
+}
+
+.noUi-handle:hover {
+    border-color: #191c24;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 21px;
+    height: 21px;
+    right: -11px;
+    top: -11px;
+}
+
+.noUi-handle:after, .noUi-handle:before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 10px;
+    width: 1px;
+    background: #E8E7E6;
+    left: 7px;
+    top: 4px;
+}
+
+.noUi-handle:after {
+    left: 11px;
+}
+
+.noUi-pips-horizontal {
+    margin-top: 5px;
+}
+
+.noUi-value-horizontal {
+    margin-top: 3px;
+}
+
+.noUi-value-horizontal:hover {
+    color: var(--racoon-orange);
+}
+
+
+/* Modal */
+.modal-link {
+    cursor: pointer;
+    color: var(--racoon-orange);
+}
+
+.modal-link:hover {
+    color: #858796;
+}
+
+.langText {
+    font-size: smaller;
+    padding-bottom: 0.3rem;
+    color: #333;
+}
+
+.modal-login .close, 
+.modal-profile .close {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+    text-shadow: 0;
+    color:rgb(31, 31, 31);
+}
+
+.gradientPreset:hover{
+  box-shadow: 0em 0 12px 3px rgba(33,33,33,.2);
+}
+
+.btn-modal-plot { 
+    color: #000000; 
+    background-color: #F7F7F7; 
+    border-color: #363636; 
+    padding: 0px 3px 0px 3px;
+  } 
+   
+.btn-modal-plot:hover,
+.btn-modal-plot.active:hover,
+.btn-modal-plot.active { 
+    color: #1f1f1f; 
+    background-color: #b1b1b1; 
+    border-color: #1f1f1f; 
+}
+
+.btn-modal-plot.active{ 
+    color: #1f1f1f; 
+    background-color: #E3E3E3; 
+    border-color: #1f1f1f; 
+}
