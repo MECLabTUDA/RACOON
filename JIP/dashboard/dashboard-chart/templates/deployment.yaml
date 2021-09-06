@@ -38,4 +38,5 @@ spec:
         - name: dashboard-db
           hostPath:
             path: {{ .Values.global.fast_data_dir }}/tuda_dashboard/ # local path where db.sqlite3 is located
+            type: DirectoryOrCreate
 ---
