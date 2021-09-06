@@ -25,6 +25,11 @@ spec:
           - name: dashboard-db
             mountPath: /usr/src/app/db.sqlite3
             subPath: db.sqlite3
+        resources:
+          limits:
+            memory: 500Mi
+          requests:
+            memory: 100Mi
         ports: # Port(s) on which your application runs
           - containerPort: 5001
       imagePullSecrets:
