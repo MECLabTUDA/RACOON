@@ -140,7 +140,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 #os.environ['APPLICATION_ROOT']
 
-STATIC_URL = '/static/'
+# TODO: this is more of a workaround, ideally django would read out the SCRIPT_NAME from incomming requests
+# this should be possible using django 3.1 and a relative STATIC_URL however this doesn't seem to work
+# STATIC_URL = f'static/'
+prefix = os.getenv('URL_PREFIX', '')
+STATIC_URL = f'{prefix}/static/'
+WHITENOISE_STATIC_PREFIX = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
