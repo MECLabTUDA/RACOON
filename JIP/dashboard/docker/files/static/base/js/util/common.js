@@ -8,7 +8,8 @@ function today() {
     return d;
 }
 
-const SITE_URL = `${window.location.protocol}//${window.location.host}`;
+//const SITE_URL = `${window.location.protocol}//${window.location.host}`;
+const SITE_URL = window.location.href;
 const API_URL = `${SITE_URL}/api`;
 
 const MAP_CHART = 0;
