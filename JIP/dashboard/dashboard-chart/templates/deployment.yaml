@@ -4,8 +4,7 @@ kind: Deployment
 metadata:
   # This name uniquely identifies the Deployment
   name: dashboard
-  namespace: base
-  #namespace: {{ .Values.global.base_namespace }}
+  namespace: {{ .Values.global.base_namespace }}
 spec:
   replicas: 1
   selector:
@@ -21,7 +20,7 @@ spec:
       containers:
       - name: dashboard
         image: {{  .Values.global.registry_url }}/tuda_dashboard:0.1.0
-        #imagePullPolicy: {{ .Values.global.pull_policy_pods }}
+        imagePullPolicy: {{ .Values.global.pull_policy_pods }}
         volumeMounts:
           - name: dashboard-db
             mountPath: /usr/src/app/db.sqlite3

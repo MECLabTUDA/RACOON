@@ -1,7 +1,8 @@
 ---
+prefix: "/racoon-dashboard"
 global:
     registry_url: ""
     pull_policy_pods: "IfNotPresent"
-    base_namespace: "base"
-    fast_data_dir: {{ .Values.global.fast_data_dir }}
-hello_world_user: "Congratulation, you made it!"
+    base_namespace: ""
+    fast_data_dir: ""
+    pull_policy_pods: ""
