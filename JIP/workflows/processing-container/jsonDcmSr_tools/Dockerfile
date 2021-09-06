@@ -1,6 +1,6 @@
 FROM ubuntu:20.10
 
-LABEL IMAGE="tuda_dcmTools"
+LABEL IMAGE="tuda_dcmtools"
 LABEL VERSION="0.1.0"
 LABEL CI_IGNORE="False"
 
