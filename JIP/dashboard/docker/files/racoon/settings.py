@@ -26,7 +26,8 @@ SECRET_KEY = 'xxl9lzn5#bi373#6=1w=!b4(nhd=v6zq12*37n)7rrbt*p+49x'
 # ------------ OPTIONS ---------- MAKE YOUR CHANGES HERE --------------
 # =====================================================================
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost']
+# ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [ '*' ]
 
 # PROD ENVIRONMENT will use a MySQL database
 # Credentials for this database can be set from line 103 on or passed as env vars
