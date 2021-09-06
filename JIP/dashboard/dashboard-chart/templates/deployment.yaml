@@ -32,6 +32,11 @@ spec:
             memory: 100Mi
         ports: # Port(s) on which your application runs
           - containerPort: 5001
+        livenessProbe:
+          tcpSocket:
+            port: 5001
+          initialDelaySeconds: 15
+          periodSeconds: 120
       imagePullSecrets:
         - name: registry-secret
       volumes:
