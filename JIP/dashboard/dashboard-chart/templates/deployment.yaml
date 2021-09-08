@@ -17,6 +17,12 @@ spec:
       labels:
         app-name: dashboard
     spec:
+      initContainers:
+      - name: dashboard-init
+        image: {{ .Values.global.registry_url }}/tuda_dashboard-init:0.1.0
+        volumeMounts:
+        - mountPath: /data
+          name: dashboard-db
       containers:
       - name: dashboard
         image: {{  .Values.global.registry_url }}/tuda_dashboard:0.1.0
