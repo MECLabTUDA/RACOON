@@ -24,7 +24,7 @@ class Dcm2ItkOperator(KaapanaBaseOperator):
 
         super().__init__(
             dag=dag,
-            image="{}{}/tuda_dcmConverter:0.1.0".format(default_registry, default_project), # Image from docker container /processing-container/dcm2itk_converter
+            image="{}{}/tuda-dcm-converter:0.1.0".format(default_registry, default_project), # Image from docker container /processing-container/dcm2itk_converter
             name="dcm2itk",
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

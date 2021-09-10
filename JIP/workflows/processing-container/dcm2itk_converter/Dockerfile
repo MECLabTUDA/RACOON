@@ -1,8 +1,8 @@
 FROM python:3.8
 
-LABEL IMAGE="tuda_dcmConverter"
+LABEL IMAGE="tuda-dcm-converter"
 LABEL VERSION="0.1.0"
-LABEL CI_IGNORE="True"
+LABEL CI_IGNORE="False"
 
 
 # set work directory
