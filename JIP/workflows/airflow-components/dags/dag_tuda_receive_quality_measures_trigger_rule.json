@@ -9,7 +9,7 @@
             "tuda_receive-quality-measures": {
                 "rest_call": {
                     "global": {
-                        "single_execution": true
+                        "single_execution": false
                     }
                 }
             }
