@@ -165,7 +165,7 @@ class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):
 
 
     def sendRequest(self, req_json, api_endpoint="data", action="createOrUpdate"):
-        url = f"{self.dashboard_web_host}:{self.dashboard_web_port}/api/{api_endpoint}/"
+        url = f"{self.dashboard_root_url}/api/{api_endpoint}/"
         headers = {'Content-Type': 'application/json', 'Authorization': f'Token {self.apiKey}'}
 
         print(f"URL: {url}")
@@ -247,8 +247,7 @@ class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):
                  command, # must be in ["createLocation", "createMeasure", "sendPlots", "sendNNtrainingLog", "sendQualityMeasures"]
                  location='', # optional, if not set the node_uid will be used
                  date='today',
-                 dashboard_web_host='DASHBOARD URL',
-                 dashboard_web_port='DASHBOARD PORT',
+                 dashboard_root_url='DASHBOARD URL',
                  dashboard_api_token='DASHBOARD TOKEN',
                  json_dir='', # Optional - Load Json from this dir (instead of input_operator.operator_out_dir)
                  *args,
@@ -258,8 +257,7 @@ class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):
 
         self.command = command
 
-        self.dashboard_web_host = dashboard_web_host
-        self.dashboard_web_port = dashboard_web_port
+        self.dashboard_root_url = dashboard_root_url
         self.apiKey = dashboard_api_token
 
         self.location = location

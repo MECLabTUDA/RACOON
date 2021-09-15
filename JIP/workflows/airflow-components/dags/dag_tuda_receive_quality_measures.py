@@ -47,12 +47,10 @@ dag = DAG(
 get_input = LocalGetInputDataOperator(dag=dag)
 identify_json_dsr = IdentifyJsonDsrOperator(dag=dag, input_operator=get_input, series_description_filter="Aggregated")
 dcm_to_json = DcmSr2JsonOperator(dag=dag, input_operator=identify_json_dsr)
-#TUDA_TODO: set dashboard_web_host
 send_to_dashboard = SendDataToWebDashboardOperator(dag=dag, 
                                                    input_operator=dcm_to_json, 
                                                    command="sendQualityMeasures", 
-                                                   dashboard_web_host="ctp-dicom-service.flow.svc", 
-                                                   dashboard_web_port="8001", 
+                                                   dashboard_root_url="http://dashboard-service.base.svc:5001/racoon-dashboard",
                                                    dashboard_api_token="cef4d40440c2411a22fe5635c54ee8501b4bfe53")
 clean = LocalWorkflowCleanerOperator(dag=dag)
 
