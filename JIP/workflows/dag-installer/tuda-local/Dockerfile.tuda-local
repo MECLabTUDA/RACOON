@@ -18,5 +18,4 @@ COPY dags/tuda/QmArtifactsOperator.py /tmp/dags/tuda/
 COPY dags/tuda/QmDicePredictorOperator.py /tmp/dags/tuda/
 COPY dags/tuda/PrepareInputDataOperator.py /tmp/dags/tuda/
 
-# TUDA_TODO: Copy files from the models dir
-# The path then has to be specified in the env variables of QmArtifactsOperator.py and QmDicePredictorOperator.py
+COPY models/tuda /tmp/models/tuda
