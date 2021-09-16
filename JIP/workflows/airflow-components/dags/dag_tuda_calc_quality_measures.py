@@ -42,7 +42,7 @@ args = {
 }
  
 dag = DAG(
-    dag_id='tuda_calc-quality-measures',
+    dag_id='tuda-calc-quality-measures',
     default_args=args,
     schedule_interval=None
     )

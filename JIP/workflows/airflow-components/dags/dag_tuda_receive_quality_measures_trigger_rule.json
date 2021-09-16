@@ -6,7 +6,7 @@
                 "0x0010,0x0020": "20202020"
         },
         "dag_ids": {
-            "tuda_receive-quality-measures": {
+            "tuda-receive-quality-measures": {
                 "rest_call": {
                     "global": {
                         "single_execution": false

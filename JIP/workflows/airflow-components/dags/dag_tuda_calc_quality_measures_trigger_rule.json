@@ -6,7 +6,7 @@
                 "0x0008,0x103E": "racoon-ukf-presegmentation-"
         },
         "dag_ids": {
-            "tuda_calc-quality-measures": {
+            "tuda-calc-quality-measures": {
                 "rest_call": {
                     "global": {
                         "single_execution": false

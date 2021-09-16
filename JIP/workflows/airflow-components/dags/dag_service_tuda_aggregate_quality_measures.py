@@ -23,7 +23,7 @@ args = {
 }
 
 dag = DAG(
-    dag_id='tuda_aggregate-quality-measures',
+    dag_id='service-tuda-aggregate-quality-measures',
     default_args=args,
     schedule_interval='@daily',
     max_active_runs=1
