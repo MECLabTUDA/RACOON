@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [ '*' ]
 
 DEBUG = False
 USE_X_FORWARDED_HOST = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 #FORCE_SCRIPT_NAME = '/hello-world'
 #SCRIPT_NAME = '/hello-world'
 # Application definition
