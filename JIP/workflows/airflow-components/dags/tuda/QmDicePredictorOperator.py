@@ -33,7 +33,7 @@ class QmDicePredictorOperator(KaapanaBaseOperator):
 
         super().__init__(
             dag=dag,
-            image="{}{}/tuda_qm_dice:0.1.0".format(default_registry, default_project),  # Image from docker container /processing-container/qm_dicePredictor
+            image="{}{}/tuda-qm-dice:0.1.0".format(default_registry, default_project),  # Image from docker container /processing-container/qm_dicePredictor
             name=f'qm-dice-predictor',
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

@@ -4,8 +4,8 @@ LABEL IMAGE="dag-tuda-central"
 LABEL VERSION="0.1.0"
 LABEL CI_IGNORE="False"
 
-COPY dags/dag_tuda_receive_quality_measures.py /tmp/dags/
-COPY dags/dag_tuda_receive_quality_measures_trigger_rule.json /tmp/dags/
+COPY dags/dag_service_tuda_receive_quality_measures.py /tmp/dags/
+COPY dags/dag_service_tuda_receive_quality_measures_trigger_rule.json /tmp/dags/
 
 COPY dags/tuda/DcmSr2JsonOperator.py /tmp/dags/tuda/
 COPY dags/tuda/IdentifyJsonDsrOperator.py /tmp/dags/tuda/

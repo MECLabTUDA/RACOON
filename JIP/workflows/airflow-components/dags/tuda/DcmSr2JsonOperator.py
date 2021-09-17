@@ -24,7 +24,7 @@ class DcmSr2JsonOperator(KaapanaBaseOperator):
 
         super().__init__(
             dag=dag,
-            image="{}{}/tuda_dcmtools:0.1.0".format(default_registry, default_project), # Image from docker container /processing-container/jsonDcmSr_tools
+            image="{}{}/tuda-dcmtools:0.1.0".format(default_registry, default_project), # Image from docker container /processing-container/jsonDcmSr_tools
             name="dcm2json",
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

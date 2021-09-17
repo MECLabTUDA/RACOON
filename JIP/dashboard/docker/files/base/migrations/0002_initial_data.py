@@ -121,21 +121,21 @@ class Migration(migrations.Migration):
             ('ukul', 48.42261781, 9.94882937, 'Ulm', 'Ulm', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Ulm', 'Department of Diagnostic and Interventional Radiology, University Hospital Ulm'),
             ('ukwü', 49.80412905, 9.95638180, 'Würzburg', 'Würzburg', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Würzburg', 'Department of Diagnostic and Interventional Radiology, University Hospital Würzburg');
         """),        
-        migrations.RunSQL("""
-            INSERT INTO `measures`
-            (measure_id, public_visible, is_main, is_color_default, is_size_default, is_open_ended, name_de, name_en, description_de, description_en, lower_bound, upper_bound)
-            VALUES
-            ('count_all',1,1,0,1,1,'Anzahl Gesamt','Number Total','Die Zahl aller Fälle','Number of cases',0,0),
-            ('count_covid',0,1,0,0,1,'Anzahl Covid-19','Number Covid-19','Anzahl der Fälle mit nachgewiesener Covid-19 Infektion','Number of cases with confirmed Covid-19 infections',0,0),
-            ('quality_noise',0,0,0,0,0,'Bildrauschen','Image Noise','Stärke des Bildrauschens','Amount of image noise',0,15),
-            ('segmentation_sanity',0,1,1,0,0,'Segmentierungs-Plausibilität','Segmentation Sanity','Marker für die Qualität der Segmentierung. Prüft z.B. Anzahl und Größe der segmentierten Regionen','Marker for segmentation quality. Checks e.g. Count and size of segmented regions',0,100),
-            ('quality_image',1,1,1,0,0,'Bildqualität','Image Quality','Automatisierter Marker zur Indikation der Bildqualität','Automated marker for indication of image quality',0,10),
-            ('slice_thickness',1,0,0,0,1,'Schichtdicke','Slice Thickness','Durchschnittliche Schichtdicke aller Bilder','Averaged slice thickness of all images',0,0),
-            ('breathing_artifacts',0,0,0,0,0,'Atemartefakte','Breathing Artifacts','Stärke der Atemartefakte','Amount of breathing artifacts',0,5),
-            ('trained_network',0,1,0,0,0,'Netzwerk trainiert','Network trained','Gibt an, ob an diesem Tag ein KI-Netz trainiert wurde (0 = nein, 1 = ja)','Indicates if a AI-network was trained today (0 = no, 1 = yes)',0,1);
-        """),
-        # Run queries to generate the random data
-        migrations.RunSQL(dailyDataQuery),
-        migrations.RunSQL(measureDataQuery),
-        migrations.RunSQL(plotDataQuery),
+        # migrations.RunSQL("""
+        #     INSERT INTO `measures`
+        #     (measure_id, public_visible, is_main, is_color_default, is_size_default, is_open_ended, name_de, name_en, description_de, description_en, lower_bound, upper_bound)
+        #     VALUES
+        #     ('count_all',1,1,0,1,1,'Anzahl Gesamt','Number Total','Die Zahl aller Fälle','Number of cases',0,0),
+        #     ('count_covid',0,1,0,0,1,'Anzahl Covid-19','Number Covid-19','Anzahl der Fälle mit nachgewiesener Covid-19 Infektion','Number of cases with confirmed Covid-19 infections',0,0),
+        #     ('quality_noise',0,0,0,0,0,'Bildrauschen','Image Noise','Stärke des Bildrauschens','Amount of image noise',0,15),
+        #     ('segmentation_sanity',0,1,1,0,0,'Segmentierungs-Plausibilität','Segmentation Sanity','Marker für die Qualität der Segmentierung. Prüft z.B. Anzahl und Größe der segmentierten Regionen','Marker for segmentation quality. Checks e.g. Count and size of segmented regions',0,100),
+        #     ('quality_image',1,1,1,0,0,'Bildqualität','Image Quality','Automatisierter Marker zur Indikation der Bildqualität','Automated marker for indication of image quality',0,10),
+        #     ('slice_thickness',1,0,0,0,1,'Schichtdicke','Slice Thickness','Durchschnittliche Schichtdicke aller Bilder','Averaged slice thickness of all images',0,0),
+        #     ('breathing_artifacts',0,0,0,0,0,'Atemartefakte','Breathing Artifacts','Stärke der Atemartefakte','Amount of breathing artifacts',0,5),
+        #     ('trained_network',0,1,0,0,0,'Netzwerk trainiert','Network trained','Gibt an, ob an diesem Tag ein KI-Netz trainiert wurde (0 = nein, 1 = ja)','Indicates if a AI-network was trained today (0 = no, 1 = yes)',0,1);
+        # """),
+        # # Run queries to generate the random data
+        # migrations.RunSQL(dailyDataQuery),
+        # migrations.RunSQL(measureDataQuery),
+        # migrations.RunSQL(plotDataQuery),
     ]

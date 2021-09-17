@@ -33,7 +33,7 @@ class QmArtifactsOperator(KaapanaBaseOperator):
 
         super().__init__(
             dag=dag,
-            image="{}{}/tuda_qm_artifacts:0.1.0".format(default_registry, default_project),  # Image from docker container /processing-container/qm_artifacts
+            image="{}{}/tuda-qm-artifacts:0.1.0".format(default_registry, default_project),  # Image from docker container /processing-container/qm_artifacts
             name=f'qm-artifacts',
             env_vars=env_vars,
             image_pull_secrets=["registry-secret"],

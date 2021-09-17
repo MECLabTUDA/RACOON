@@ -17,23 +17,34 @@ spec:
       labels:
         app-name: dashboard
     spec:
-      initContainers:
-      - name: dashboard-init
-        image: {{ .Values.global.registry_url }}/tuda_dashboard-init:0.1.0
-        volumeMounts:
-        - mountPath: /data
-          name: dashboard-db
+      # initContainers:
+      # - name: dashboard-init
+      #   image: {{ .Values.global.registry_url }}/tuda-dashboard-init:0.1.0
+      #   volumeMounts:
+      #   - mountPath: /data
+      #     name: dashboard-db
       containers:
       - name: dashboard
-        image: {{  .Values.global.registry_url }}/tuda_dashboard:0.1.0
+        image: {{  .Values.global.registry_url }}/tuda-dashboard:0.1.0
         imagePullPolicy: {{ .Values.global.pull_policy_pods }}
         env:
         - name: URL_PREFIX
           value: {{ .Values.prefix }}
+        - name: DJANGO_SUPERUSER_USERNAME
+          value: dashboard-superadmin
+        - name: DJANGO_SUPERUSER_PASSWORD
+          value: superadmin
+        - name: DJANGO_SUPERUSER_EMAIL
+          value: dashboard-superadmin@gmail.com
+        - name: ADMIN_USERNAME
+          value: dashboard-admin
+        - name: ADMIN_PASSWORD
+          value: admin   
+        - name: ADMIN_EMAIL
+          value: dashboard-admin@gmail.com
         volumeMounts:
           - name: dashboard-db
-            mountPath: /usr/src/app/db.sqlite3
-            subPath: db.sqlite3
+            mountPath: /usr/src/app/database
         resources:
           limits:
             memory: 500Mi
@@ -51,6 +62,6 @@ spec:
       volumes:
         - name: dashboard-db
           hostPath:
-            path: {{ .Values.global.fast_data_dir }}/tuda_dashboard/ # local path where db.sqlite3 is located
+            path: {{ .Values.global.fast_data_dir }}/tuda-dashboard/ # local path where db.sqlite3 is located
             type: DirectoryOrCreate
 ---
