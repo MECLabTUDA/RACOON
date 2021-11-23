@@ -92,13 +92,13 @@ def join_path(list):
     r"""From a list of chained directories, forms a path"""
     return functools.reduce(os.path.join, list)
 
-def load_model(model_name, output_features, path, weights):
+def load_model(model_name, output_features, path, weights, map_location):
     r"""This function creates a model and based on path and weights, it loads the
         corresponding state_dict and returns the model."""
     model = getattr(models, model_name)(output_features)    # Same as models.model_name(output_features)
     # If weights, than load the state dict from path
     if weights:
-        state_dict = torch.load(path)
+        state_dict = torch.load(path, map_location=map_location)
         model.load_state_dict(state_dict)
         model.eval()
     # Return the model

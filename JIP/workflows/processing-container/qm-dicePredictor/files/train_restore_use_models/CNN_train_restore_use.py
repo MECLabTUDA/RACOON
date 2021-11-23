@@ -459,7 +459,7 @@ def _CNN_test(config):
 
     # 6. Load pre-trained model
     path_m = os.path.join(os.environ["PERSISTENT_DIR"], config['noise'], 'model_state_dict.zip')
-    model = lr.load_model('CNN_Net3D', output_features, path_m, True)
+    model = lr.load_model('CNN_Net3D', output_features, path_m, True, device)
     model.to(device)
 
     # 7. Define Loss and Agent

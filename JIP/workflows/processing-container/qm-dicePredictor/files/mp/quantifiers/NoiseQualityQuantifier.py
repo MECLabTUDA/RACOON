@@ -13,7 +13,7 @@ class NoiseQualityQuantifier(ImgQualityQuantifier):
         self.quality_values = [0, 0.25, 0.5, 0.75, 1]
         for artefact in self.artefacts:
             path_m = os.path.join(os.environ["PERSISTENT_DIR"], artefact, 'model_state_dict.zip')
-            model = lr.load_model('CNN_Net3D', output_features, path_m, True)
+            model = lr.load_model('CNN_Net3D', output_features, path_m, True, device)
             self.models[artefact] = model
         super().__init__(device, version)
 
