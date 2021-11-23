@@ -59,7 +59,7 @@ class DataConnector():
         #print(f"Op In Dir: {os.environ['OPERATOR_IN_DIR']}")
         #print(f"Op Out Dir: {os.environ['OPERATOR_OUT_DIR']}")
         
-        batch_folders = [f for f in glob.glob(os.path.join(os.environ['WORKFLOW_DIR'], os.environ["OPERATOR_IN_DIR"],'*'))]
+        batch_folders = [f for f in glob.glob(os.path.join('/', os.environ['WORKFLOW_DIR'], os.environ["OPERATOR_IN_DIR"],'*'))]
         for batch_element_dir in batch_folders:
             img_dir = os.path.join(batch_element_dir, 'img')
             seg_dir = os.path.join(batch_element_dir, 'seg')
@@ -122,7 +122,7 @@ class DataConnector():
     def createOutputJson(self):
         r"""Create a JSON file from all the metrics dict and save to the workspace output dir"""
         
-        out_dir = os.path.join(os.environ['WORKFLOW_DIR'], os.environ["OPERATOR_OUT_DIR"])
+        out_dir = os.path.join('/', os.environ['WORKFLOW_DIR'], os.environ["OPERATOR_OUT_DIR"])
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         

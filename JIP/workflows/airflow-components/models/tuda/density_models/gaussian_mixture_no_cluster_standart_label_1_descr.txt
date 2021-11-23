@@ -1,6 +1,0 @@
-Data describtion: 
-
-Model describtion: 
-
-Model Settings: 
-{}

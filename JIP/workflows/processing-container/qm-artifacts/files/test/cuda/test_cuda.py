@@ -7,6 +7,3 @@ def test_cuda():
     torch.cuda.set_device(device)
     tensor = torch.zeros((2,3)).cuda()
     assert str(tensor.device) == 'cuda:'+str(device)
-
-if __name__ == "__main__":
-    test_cuda()

@@ -16,6 +16,7 @@
 import copy
 import torch
 import torchio
+import random
 from mp.data.pytorch.pytorch_dataset import PytorchDataset
 import mp.data.pytorch.transformation as trans
 import mp.eval.inference.predictor as pred
@@ -118,7 +119,7 @@ class PytorchCNN3DDataset(PytorchCNNDataset):
     are resized to the specified size, otherwise they are center-cropped and 
     padded if needed."""
     def __init__(self, dataset, ix_lst=None, size=(1, 56, 56, 10), 
-        norm_key='rescaling', aug_key='standard', resize=False):
+        norm_key='rescaling', aug_key='standard', resize=False, samples_per_volume=None):
         if isinstance(size, int):
             size = (1, size, size, size)
         super().__init__(dataset=dataset, ix_lst=ix_lst, size=size, 
@@ -204,7 +205,6 @@ class Pytorch3DQueue(PytorchCNNDataset):
         return x, y
 
     def get_subject_dataloader(self, subject_ix):
-
         subject = copy.deepcopy(self.instances[subject_ix].get_subject())
         subject.load()
         subject = self.transform_subject(subject)
@@ -221,3 +221,10 @@ class Pytorch3DQueue(PytorchCNNDataset):
             target_tensor = patches_batch['y'][torchio.DATA]
             dl_items.append((input_tensor, target_tensor))
         return dl_items
+    
+    def get_sample(self, sample_size):
+        if len(self.instances) > sample_size:
+            sample_idx = random.sample(range(len(self.instances)), sample_size)
+        else:
+            sample_idx = range(len(self.instances))
+        return [self.__getitem__(patch) for patch in sample_idx]

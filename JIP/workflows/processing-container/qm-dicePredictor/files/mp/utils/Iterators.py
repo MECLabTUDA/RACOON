@@ -73,22 +73,21 @@ class Dataset_Iterator():
         '''
         print('Starting iteration over images')
         output=[]
+   
+        # if self.mode == 'UK_Frankfurt2':
+        #     names = sorted(os.listdir(self.data_path))
+        #     for name in names:
+        #         img_path = os.path.join(self.data_path,name,'image.nii.gz')
+        #         seg_path = os.path.join(self.data_path,name,'mask.nii.gz')
+        #         append_value_to_output(img_path,seg_path,func,output,**kwargs)
 
-        
-        if self.mode == 'UK_Frankfurt2':
-            names = sorted(os.listdir(self.data_path))
-            for name in names:
-                img_path = os.path.join(self.data_path,name,'image.nii.gz')
-                seg_path = os.path.join(self.data_path,name,'mask.nii.gz')
-                append_value_to_output(img_path,seg_path,func,output,**kwargs)
-
-        if self.mode == 'normal':
-            names = sorted(list(set(file_name.split('.nii')[0].split('_gt')[0] 
-                        for file_name in os.listdir(self.data_path))))
-            for name in names: 
-                seg_path = os.path.join(self.data_path,name+'_gt.nii.gz')
-                img_path = os.path.join(self.data_path,name+'.nii.gz')
-                append_value_to_output(img_path,seg_path,func,output,**kwargs)
+        # if self.mode == 'normal':
+        #     names = sorted(list(set(file_name.split('.nii')[0].split('_gt')[0] 
+        #                 for file_name in os.listdir(self.data_path))))
+        #     for name in names: 
+        #         seg_path = os.path.join(self.data_path,name+'_gt.nii.gz')
+        #         img_path = os.path.join(self.data_path,name+'.nii.gz')
+        #         append_value_to_output(img_path,seg_path,func,output,**kwargs)
 
         if self.mode == 'JIP':
             names = sorted(os.listdir(self.data_path))
@@ -116,25 +115,26 @@ class Dataset_Iterator():
         '''
         print('Starting iteration over components')
         output=[]
-        if self.mode == 'UK_Frankfurt2':
-            for dir in sorted(os.listdir(self.data_path)):
-                path = os.path.join(self.data_path,dir)
-                img_path = os.path.join(path,'image.nii.gz')
-                seg_path = os.path.join(path,'mask.nii.gz')
-                img = torch.tensor(torchio.Image(img_path, type=torchio.INTENSITY).numpy())[0]
-                seg = torch.tensor(torchio.Image(seg_path, type=torchio.LABEL).numpy())[0]
-                iterate_components(img,seg,func,output,threshold,**kwargs)
+        
+        # if self.mode == 'UK_Frankfurt2':
+        #     for dir in sorted(os.listdir(self.data_path)):
+        #         path = os.path.join(self.data_path,dir)
+        #         img_path = os.path.join(path,'image.nii.gz')
+        #         seg_path = os.path.join(path,'mask.nii.gz')
+        #         img = torch.tensor(torchio.Image(img_path, type=torchio.INTENSITY).numpy())[0]
+        #         seg = torch.tensor(torchio.Image(seg_path, type=torchio.LABEL).numpy())[0]
+        #         iterate_components(img,seg,func,output,threshold,**kwargs)
 
-        if self.mode == 'normal':
-            #get the names of the files, it is assumed, that the data has the endings for mask and img as UK_Frankfurt
-            names = sorted(list(set(file_name.split('.nii')[0].split('_gt')[0] 
-                        for file_name in os.listdir(self.data_path))))
-            for name in names:
-                seg_path = os.path.join(self.data_path,name+'_gt.nii.gz')
-                img_path = os.path.join(self.data_path,name+'.nii.gz')
-                img = torch.tensor(torchio.Image(img_path, type=torchio.INTENSITY).numpy())[0]
-                seg = torch.tensor(torchio.Image(seg_path, type=torchio.LABEL).numpy())[0]
-                iterate_components(img,seg,func,output,threshold,**kwargs) 
+        # if self.mode == 'normal':
+        #     #get the names of the files, it is assumed, that the data has the endings for mask and img as UK_Frankfurt
+        #     names = sorted(list(set(file_name.split('.nii')[0].split('_gt')[0] 
+        #                 for file_name in os.listdir(self.data_path))))
+        #     for name in names:
+        #         seg_path = os.path.join(self.data_path,name+'_gt.nii.gz')
+        #         img_path = os.path.join(self.data_path,name+'.nii.gz')
+        #         img = torch.tensor(torchio.Image(img_path, type=torchio.INTENSITY).numpy())[0]
+        #         seg = torch.tensor(torchio.Image(seg_path, type=torchio.LABEL).numpy())[0]
+        #         iterate_components(img,seg,func,output,threshold,**kwargs) 
         
         if self.mode == 'JIP':
             names = sorted(os.listdir(self.data_path))

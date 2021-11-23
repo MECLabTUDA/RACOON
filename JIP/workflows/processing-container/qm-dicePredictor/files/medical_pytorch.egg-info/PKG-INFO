@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: medical-pytorch
+Version: 0.1
+Summary: A project boundling several MIC libraries.
+Home-page: https://github.com/camgbus/medical_pytorch
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: UNKNOWN
+Keywords: python setuptools
+Platform: UNKNOWN

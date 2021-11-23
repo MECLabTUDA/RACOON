@@ -1,6 +1,0 @@
-Data describtion: 
-training on nearly all data from COVID-RACOON at 5.4.2021
-Model describtion: 
-gaussian model with bw 0.005
-Model Settings: 
-{}

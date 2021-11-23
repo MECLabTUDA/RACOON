@@ -1,9 +1,9 @@
 Data describtion: 
 all of train data
 Used features: 
-['density_distance', 'dice_scores', 'connected_components', 'gauss_params']
+['dice_scores', 'connected_components', 'gauss_params', 'seg_in_lung']
 Model describtion: 
-SVR
+LR
 train parameter : 
 {}
-The regressor has a score of 0.8122204598008462 in train data, an l2 loss of 0.009222021239910578 and an l1 loss (avg. accuracy) of 0.09504505762544282
+The model has an accuracy of 0.40302267002518893 in train data

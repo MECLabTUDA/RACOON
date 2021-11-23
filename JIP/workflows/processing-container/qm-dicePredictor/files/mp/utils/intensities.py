@@ -74,7 +74,7 @@ def sample_intensities(img,seg,props,number=5000):
         Returns: (list(numbers)): the sampled intensity values'''
                 
         coords = props.coords
-        rng = np.random.default_rng()
+        rng = np.random.default_rng(seed=int(os.environ["SEED_INTENSITY_SAMPLING"]))
         if len(coords) > number:
                 coords = rng.choice(coords,number,replace=False,axis=0)
 

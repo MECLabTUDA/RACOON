@@ -37,7 +37,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train, reterain or use a specified model to predict the quality of CT scans.')
     parser.add_argument('--noise_type', choices=['blur', 'resolution', 'ghosting', 'noise',
                                                 'motion', 'spike'], required=False,
-                        help='Specify the CT artefact on which the model will be trained. '+
+                        help='Specify the CT artifact on which the model will be trained. '+
                              'Default model type: blur.')
     parser.add_argument('--mode', choices=['preprocess', 'train', 'retrain', 'testID', 'testOOD', 'testIOOD', 'inference'], required=True,
                         help='Specify in which mode to use the model. Either train a model or use'+
@@ -51,28 +51,23 @@ if __name__ == "__main__":
                             ' Default: GPU device with ID 4 will be used.')
     parser.add_argument('--restore', action='store_const', const=True, default=False,
                         help='Restore last saved model state and continue training from there.'+
-                            ' Default: Initialize a new model and train from beginning.')
+                             ' Restore is also used in the augmentation step of the preprocessing of the train_ds only,'+
+                             ' if the augmentation fails at some point. --> This flag is ambigious!'
+                            ' Default value: False.')
     parser.add_argument('--use_telegram_bot', action='store_const', const=True, default=False,
                         help='Send message during training through a Telegram Bot'+
                             ' (Token and Chat-ID need to be provided, otherwise an error occurs!).'+
                             ' Default: No Telegram Bot will be used to send messages.')
-    parser.add_argument('--testID', action='store_const', const=True, default=False,
-                        help='Test the pre-trained model with an unseen In Distribution dataset.'+
-                            ' (Only considered if --mode test is used).'+
-                            ' Default: Used if not otherwise specified.')
-    parser.add_argument('--testOOD', action='store_const', const=True, default=False,
-                        help='Test the pre-trained model with an unseen Out Of Distribution dataset.'+
-                            ' (Only considered if --mode test is used).'+
-                            ' Default: If not set, --testID will be used.')
-    parser.add_argument('--testIOOD', action='store_const', const=True, default=False,
-                        help='Test the pre-trained model with an unseen In Distribution'+
-                            ' and an Out Of Distribution dataset.'+
-                            ' (Only considered if --mode test is used).'+
-                            ' Default: If not set, --testID will be used.')
+    parser.add_argument('--store_data', action='store_const', const=True, default=False,
+                        help='Store the actual datapoints and save them as .npy after training.'+
+                            ' Takes a lot of time and CPU power (when using GPU).'+
+                            ' Default: Only necessary data will be stored --> False.')
     parser.add_argument('--try_catch_repeat', action='store', type=int, nargs=1, default=0,
                         help='Try to train the model with a restored state, if an error occurs.'+
-                            ' Repeat only <TRY_CATCH_REPEAT> number of times.'+
-                            ' Default: Do not retry to train after an error occurs.')
+                            ' Repeat only <TRY_CATCH_REPEAT> number of times. It can also be used for'+
+                            ' preprocessing step, since the augmentation might fail at some point, for'+
+                            ' training on a model and retraining a model.'+
+                            ' Default value: 0.')
     parser.add_argument('--idle_time', action='store', type=int, nargs=1, default=0,
                         help='The number represents the idle time (waiting time) in seconds after an error'+
                             ' occurs before starting the process again. --> Works only in combination'+
@@ -86,6 +81,7 @@ if __name__ == "__main__":
     data_type = args.datatype
     cuda = args.device
     restore = args.restore
+    store_data = args.store_data
     msg_bot = args.use_telegram_bot
     try_catch = args.try_catch_repeat
     idle_time = args.idle_time
@@ -117,23 +113,40 @@ if __name__ == "__main__":
     print('Building environmental variables..')
     # The environmental vars will later be automatically set by the workflow that triggers the docker container
     # data_dirs (for inference)
-    os.environ["WORKFLOW_DIR"] = os.path.join('/', os.environ["WORKFLOW_DIR"])
-    #os.environ["OPERATOR_IN_DIR"] = "input"
-    #os.environ["OPERATOR_OUT_DIR"] = "output"
+    os.environ["WORKFLOW_DIR"] = os.path.join(JIP_dir, 'data_dirs')
+    os.environ["OPERATOR_IN_DIR"] = "input"
+    os.environ["OPERATOR_OUT_DIR"] = "output"
     os.environ["OPERATOR_TEMP_DIR"] = "temp"
-    #os.environ["OPERATOR_PERSISTENT_DIR"] = os.path.join(JIP_dir, 'data_dirs', 'persistent') # pre-trained models
+    os.environ["PERSISTENT_DIR"] = os.path.join(JIP_dir, 'data_dirs', 'persistent') # pre-trained models
 
     # preprocessed_dirs (for preprocessed data (output of this workflow = input for main workflow)
-    os.environ["PREPROCESSED_WORKFLOW_DIR"] = os.path.join(os.environ["WORKFLOW_DIR"], 'preprocessed_dirs')
+    os.environ["PREPROCESSED_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'preprocessed_dirs')
     os.environ["PREPROCESSED_OPERATOR_OUT_TRAIN_DIR"] = "output_train"
     os.environ["PREPROCESSED_OPERATOR_OUT_TEST_DIR"] = "output_test"
     os.environ["PREPROCESSED_OPERATOR_OUT_DATA_DIR"] = "output_data"
 
     # train_dirs (for training data)
-    os.environ["TRAIN_WORKFLOW_DIR"] = os.path.join(os.environ["WORKFLOW_DIR"], 'train_dirs')
+    os.environ["TRAIN_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'train_dirs')
 
     # test_dirs (for test data)
-    os.environ["TEST_WORKFLOW_DIR"] = os.path.join(os.environ["WORKFLOW_DIR"], 'test_dirs')
+    os.environ["TEST_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'test_dirs')
+
+    # Make directories to avoid any errors
+    paths = [os.path.join(os.path.sep, os.environ["WORKFLOW_DIR"], os.environ["OPERATOR_IN_DIR"]),
+             os.path.join(os.path.sep, os.environ["WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"]),
+             os.path.join(os.path.sep, os.environ["WORKFLOW_DIR"], os.environ["OPERATOR_TEMP_DIR"]),
+             os.path.join(os.path.sep, os.environ["WORKFLOW_DIR"], os.environ["PERSISTENT_DIR"]),
+             os.path.join(os.path.sep, os.environ["PREPROCESSED_WORKFLOW_DIR"], os.environ["PREPROCESSED_OPERATOR_OUT_TRAIN_DIR"]),
+             os.path.join(os.path.sep, os.environ["PREPROCESSED_WORKFLOW_DIR"], os.environ["PREPROCESSED_OPERATOR_OUT_TEST_DIR"]),
+             os.path.join(os.path.sep, os.environ["PREPROCESSED_WORKFLOW_DIR"], os.environ["PREPROCESSED_OPERATOR_OUT_DATA_DIR"]),
+             os.path.join(os.path.sep, os.environ["TRAIN_WORKFLOW_DIR"], os.environ["OPERATOR_IN_DIR"]),
+             os.path.join(os.path.sep, os.environ["TRAIN_WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"]),
+             os.path.join(os.path.sep, os.environ["TEST_WORKFLOW_DIR"], os.environ["OPERATOR_IN_DIR"]),
+             os.path.join(os.path.sep, os.environ["TEST_WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"])]
+    for path in paths:
+        if not os.path.exists(path):
+            os.makedirs(path)
+
 
     # ------------------------
     # Build config dictionary
@@ -141,42 +154,73 @@ if __name__ == "__main__":
     # NOTE: Decathlon Dataset will be nr_images x 5 scans big.
     #       Grand Challenge Dataset will be nr_images x 5 scans big (or less if less scans are available).
     #       UK Frankfurt Dataset will be nr_images x 5 scans big (or less if less scans are available).
-    # NOTE: num_intensities embodies the number of quality values 1 to 5), where 1 is a bad quality
+    #       Mixed Dataset will be nr_images x 15 scans big (or less if less scans are available).
+    # NOTE: num_intensities embodies the number of quality values 1 to 5, where 1 is a bad quality
     #       and 5 is a the best quality. This will be transformed into values between 0 and 1 in
     #       the inference step, whereas 0s is bad quality and 1 is the best quality.
-    # NOTE: train_on is includes all datasets, on which the model needs to be trained. The list will be used for EWC
-    #       approach. For the conventional approach, only the first entry of the list will be considered.
-    #       {'Decathlon', 'GC', 'FRA', 'mixed'}. For institutes that use this method to retrain a pre-trained model
-    #       with their own dataset can write every name they want, since the whole data from preprocessed_dirs/output_train
+    # NOTE: train_on indicates on which dataset to train: {'Decathlon', 'GC', 'FRA', 'mixed'}.
+    #       For institutes that use this method to retrain a pre-trained model with their own dataset can write
+    #       every name they want, since the whole data from preprocessed_dirs/output_train
     #       will be loaded and used. Thus, this variable will not be considered in this process.
     #       Its important to note, that the labels should be also provided at preprocessed_dirs/output_train/labels.json
     #       and that the data in preprocessed_dirs/output_train needs to be preprocessed while considering the defined data structure.
-    # NOTE: sample_size represents the number of samples that will be used for the EWC approach (combined with importance).
+    # NOTE: For learning rate decay, set the variables 'lr_decay', 'decay_type' and 'decay_rate'. decay_type can be 
+    #       {'exp_decay', 'step_decay', 'mstep_decay', 'plat_decay'}, whereas decay_rate represents gamma in all of these decays except
+    #       plat_decay. --> lr will normally always updated with lr = lr * decay_rate, so consider this when setting decay_rate.
     config = {'device': cuda, 'input_shape': (1, 60, 299, 299), 'augmentation': True, 'mode': mode,
-              'data_type': data_type, 'lr': 0.001, 'batch_size': 64, 'num_intensities': 5, 'nr_epochs': 100,
-              'noise': noise, 'weight_decay': 0.01, 'save_interval': 20, 'msg_bot': msg_bot, 'importance': 1000,
-              'bot_msg_interval': 10, 'nr_images': 20, 'val_ratio': 0.2, 'test_ratio': 0.2, 'augment_strat': 'none',
-              'train_on': ['Decathlon', 'GC', 'FRA'], 'sample_size': 60, 'aug_sample_size': 25}
-    
+              'data_type': data_type, 'lr': 1e-3, 'batch_size': 64, 'num_intensities': 5, 'nr_epochs': 250, 'decay_type': 'plat_decay',
+              'noise': noise, 'weight_decay': 7e-3, 'save_interval': 100, 'msg_bot': msg_bot, 'lr_decay': True, 'decay_rate': 0.9,
+              'bot_msg_interval': 10, 'nr_images': 25, 'val_ratio': 0.2, 'test_ratio': 0.2, 'augment_strat': 'none',
+              'train_on': 'mixed', 'data_augmented': True, 'restore': restore, 'store_data': store_data}
+
     # -------------------------
     # Preprocess
     # -------------------------
     if mode == 'preprocess':
-        if msg_bot:
-            bot.send_msg('Start to preprocess data..')
-        preprocessed, error = preprocess_data(config)
-        if preprocessed and msg_bot:
-            bot.send_msg('Finished preprocessing..')
-        if not preprocessed:
-            print('Data could not be processed. The following error occured: {}.'.format(error))
-            if msg_bot:
-                bot.send_msg('Data could not be processed. The following error occured: {}.'.format(error))
-
+        dir_name = os.path.join(os.path.sep, os.environ["PREPROCESSED_WORKFLOW_DIR"], os.environ["PREPROCESSED_OPERATOR_OUT_TRAIN_DIR"])
+        augmented_on = os.path.join(dir_name, 'augmented_on.pkl')
+        if try_catch == 0:
+            try_catch = 1
+        for i in range(try_catch):
+            if i != 0:
+                time.sleep(idle_time)   # Delays for idle_time seconds.
+            if not restore:
+                if msg_bot:
+                    bot.send_msg('Start to preprocess data..')
+                preprocessed, error = preprocess_data(config)
+                if preprocessed and msg_bot:
+                    bot.send_msg('Finished preprocessing..')
+                if not preprocessed:
+                    print('Data could not be preprocessed. The following error occured: {}.'.format(error))
+                    if msg_bot:
+                        bot.send_msg('Data could not be preprocessed. The following error occured: {}.'.format(error))
+                    # Check if the directory is empty and whether the augmented_on pickle file does not exist. If so, restore = False, otherwise True.
+                    if (os.path.exists(dir_name) and os.path.isdir(dir_name)):
+                        if len(os.listdir(dir_name)) <= 1 or not os.path.exists(augmented_on):
+                            # Directory contains nothing
+                            restore = False
+                            config['restore'] = False
+                        else:
+                            # Directory is not empty
+                            restore = True
+                            config['restore'] = True
+            else:
+                if msg_bot:
+                    bot.send_msg('Start to continue with preprocessing..')
+                preprocessed, error = preprocess_data(config)
+                if preprocessed and msg_bot:
+                    bot.send_msg('Finished preprocessing..')
+                    break
+                if not preprocessed:
+                    print('Data could not be preprocessed. The following error occured: {}.'.format(error))
+                    if msg_bot:
+                        bot.send_msg('Data could not be preprocessed. The following error occured: {}.'.format(error))
+    
     # -------------------------
     # Train
     # -------------------------
     if mode == 'train':
-        dir_name = os.path.join(os.environ["TRAIN_WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"], noise, 'states')
+        dir_name = os.path.join(os.path.sep, os.environ["TRAIN_WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"], noise, 'states')
         if try_catch == 0:
             try_catch = 1
         for i in range(try_catch):
@@ -200,9 +244,11 @@ if __name__ == "__main__":
                         if len(os.listdir(dir_name)) <= 1:
                             # Directory only contains json splitting file but no model state!
                             restore = False
+                            config['restore'] = False
                         else:
                             # Directory is not empty
                             restore = True
+                            config['restore'] = True
             else:
                 if msg_bot:
                     bot.send_msg('Start to restore the model for noise type {} and continue training..'.format(noise))
@@ -219,7 +265,7 @@ if __name__ == "__main__":
     # Retrain
     # -------------------------
     if mode == 'retrain':
-        dir_name = os.path.join(os.environ["TRAIN_WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"], noise, 'states')
+        dir_name = os.path.join(os.path.sep, os.environ["TRAIN_WORKFLOW_DIR"], os.environ["OPERATOR_OUT_DIR"], noise, 'states')
         if try_catch == 0:
             try_catch = 1
         for i in range(try_catch):
@@ -243,9 +289,11 @@ if __name__ == "__main__":
                         if len(os.listdir(dir_name)) <= 1:
                             # Directory only contains json splitting file but no model state!
                             restore = False
+                            config['restore'] = False
                         else:
                             # Directory is not empty
                             restore = True
+                            config['restore'] = True
             else:
                 if msg_bot:
                     bot.send_msg('Start to restore the model for noise type {} and continue training..'.format(noise))

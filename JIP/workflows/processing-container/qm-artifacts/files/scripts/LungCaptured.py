@@ -103,7 +103,7 @@ def CheckWholeLungCaptured(input_path, target_path, gpu=False, cuda=0):
 	return discard, segmentation_volume, start_seg_idx, end_seg_idx
 
 
-"""Grand Chalenge Data"""
+"""Grand Challenge Data"""
 def GC(source_path, target_path, gpu=True, cuda=7):
 	r"""Extracts MRI images and saves the modified images."""
 	# Filenames have the form 'volume-covid19-A-XXXX_ct.nii'
@@ -206,6 +206,7 @@ def FRA(source_path, target_path, gpu=True, cuda=7):
 
 
 if __name__ == '__main__':
+
 	# Extract necessary paths GC   
 	global_name = 'GC_Corona'
 	dataset_path = os.path.join(storage_data_path, global_name, 'Train')
