@@ -5,7 +5,7 @@ LABEL VERSION="0.1.0"
 LABEL CI_IGNORE="False"
 
 COPY dags/dag_tuda_calc_quality_measures.py /tmp/dags/
-COPY dags/dag_tuda_calc_quality_measures_trigger_rule.json /tmp/dags/
+COPY dags/dag_tuda_calc_quality_measures_trigger_rule.json.disabled /tmp/dags/
 COPY dags/dag_service_tuda_aggregate_quality_measures.py /tmp/dags/
 
 COPY dags/tuda/AggregateQmDataOperator.py /tmp/dags/tuda/
