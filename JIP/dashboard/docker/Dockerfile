@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ADD ./files /usr/src/app
 COPY files/ ./
 RUN chmod +x boot.sh
-#RUN python manage.py collectstatic
+RUN python manage.py collectstatic --noinput
 
 # Expose ports
 EXPOSE 5001
