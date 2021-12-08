@@ -31,7 +31,7 @@ class Json2DcmSrOperator(KaapanaBaseOperator):
                             )
 
         # extract location ID from JIP
-        node_uid = Variable.get(key="node_uid", default_var="N/A")
+        node_uid = Variable.get(key="racoon_node_id", default_var="N/A")
 
         if env_vars is None:
             env_vars = {}
