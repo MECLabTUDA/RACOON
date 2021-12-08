@@ -63,7 +63,7 @@ qm_result_merger = MergeQmOutputsOperator(dag=dag, qm_operators=[qm_artifacts, q
 
 json_to_dcm = Json2DcmSrOperator(dag=dag, input_operator=qm_result_merger, level="batch", series_description="Single QM", reference_meta_file=os.path.join(prepare_data.operator_out_dir, "reference_meta.json"))
 dcm_send = DcmSendOperator(dag=dag, input_operator=json_to_dcm, level='element')
-clean = LocalWorkflowCleanerOperator(dag=dag)
+clean = LocalWorkflowCleanerOperator(dag=dag, clean_workflow_dir=True)
 
 
 get_input >> prepare_data >> transform_data >> [qm_artifacts, qm_dice_pred] >> qm_result_merger >> json_to_dcm >> dcm_send >> clean
