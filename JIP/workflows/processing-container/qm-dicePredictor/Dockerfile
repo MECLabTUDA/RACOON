@@ -19,6 +19,7 @@ RUN pip3 install --upgrade setuptools
 RUN pip3 install -r requirements.txt
 RUN pip3 install git+https://github.com/amrane99/lungmask
 RUN curl https://www.kaapana.ai/kaapana-downloads/secret-7583084/qm-dicePredictor-models.zip -o test-models.zip && unzip test-models.zip && rm test-models.zip && mv JIP/workflows/processing-container/qm-dicePredictor/files/test/test_obj test/test_obj
+RUN python3 -c "from lungmask import mask; mask.get_model('unet', 'R231')"
 
 ENV MODELDIR "/models"
 
