@@ -25,17 +25,19 @@ spec:
         - name: URL_PREFIX
           value: {{ .Values.prefix }}
         - name: DJANGO_SUPERUSER_USERNAME
-          value: dashboard-superadmin
+          value: {{ .Values.global.racoon.dashboard.user }}
         - name: DJANGO_SUPERUSER_PASSWORD
-          value: superadmin
+          value: {{ .Values.global.racoon.dashboard.password }}
         - name: DJANGO_SUPERUSER_EMAIL
-          value: dashboard-superadmin@gmail.com
+          value: {{ .Values.global.racoon.dashboard.email }}
         - name: ADMIN_USERNAME
           value: dashboard-admin
         - name: ADMIN_PASSWORD
           value: admin   
         - name: ADMIN_EMAIL
           value: dashboard-admin@gmail.com
+        - name: RACOON_NODE_ID
+          value: {{ .Values.global.racoon.node_id }}
         volumeMounts:
           - name: dashboard-db
             mountPath: /usr/src/app/database

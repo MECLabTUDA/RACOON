@@ -27,6 +27,8 @@ ENV ADMIN_USERNAME=kaapana
 ENV ADMIN_PASSWORD=admin
 ENV ADMIN_EMAIL=kaapana@gmx.de
 
+ENV RACOON_NODE_ID=central
+
 # default command to execute    
 # CMD exec gunicorn racoon.wsgi:application --bind 0.0.0.0:8000 --workers 3 
 

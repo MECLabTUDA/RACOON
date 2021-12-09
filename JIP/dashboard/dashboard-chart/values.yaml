@@ -6,3 +6,9 @@ global:
     base_namespace: ""
     fast_data_dir: ""
     pull_policy_pods: ""
+    racoon:
+        node_id: "central"
+        dashboard:
+            user: "dashboard-superadmin"
+            password: "superadmin"
+            email: "dashboard-superadmin@gmail.com"
