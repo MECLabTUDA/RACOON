@@ -277,7 +277,7 @@ class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):
         self.location = location
         if location == '':
             # extract location ID from JIP
-            self.location = Variable.get(key="node_uid", default_var="N/A")
+            self.location = Variable.get(key="racoon_node_id", default_var="N/A")
         
         self.date = date
         if date == '' or date.lower() == 'today':
