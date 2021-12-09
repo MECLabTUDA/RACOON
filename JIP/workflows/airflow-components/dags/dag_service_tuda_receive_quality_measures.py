@@ -50,8 +50,7 @@ dcm_to_json = DcmSr2JsonOperator(dag=dag, input_operator=identify_json_dsr)
 send_to_dashboard = SendDataToWebDashboardOperator(dag=dag, 
                                                    input_operator=dcm_to_json, 
                                                    command="sendQualityMeasures", 
-                                                   dashboard_root_url="http://dashboard-service.base.svc:5001", # racoon-dashboard not needed, since we are in the backend
-                                                   dashboard_api_token="cef4d40440c2411a22fe5635c54ee8501b4bfe53")
+                                                   dashboard_root_url="http://dashboard-service.base.svc:5001") # racoon-dashboard not needed, since we are in the backend
 clean = LocalWorkflowCleanerOperator(dag=dag)
 
 get_input >> identify_json_dsr >> dcm_to_json >> send_to_dashboard >> clean

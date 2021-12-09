@@ -163,10 +163,18 @@ class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):
         req_json = json.dumps(req_data)
         self.sendRequest(req_json, api_endpoint='data', action="createOrUpdate")
 
+    def getToken(self):
+        if not self.apiKey or self.apiKey == '':
+            url = f"{self.dashboard_root_url}/api-token-auth/"
+            payload = {'username': Variable.get(key="racoon_dashboard_user"), 'password': Variable.get(key="racoon_dashboard_password")}
+            r = requests.post(url, data=payload)
+            token = r.json()['token']
+            self.apiKey = token
+        return self.apiKey
 
     def sendRequest(self, req_json, api_endpoint="data", action="createOrUpdate"):
         url = f"{self.dashboard_root_url}/api/{api_endpoint}/"
-        headers = {'Content-Type': 'application/json', 'Authorization': f'Token {self.apiKey}'}
+        headers = {'Content-Type': 'application/json', 'Authorization': f'Token {self.getToken()}'}
 
         print(f"URL: {url}")
         print(f"Headers: {headers}")
@@ -244,14 +252,20 @@ class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):
 
     def __init__(self,
                  dag,
-                 command, # must be in ["createLocation", "createMeasure", "sendPlots", "sendNNtrainingLog", "sendQualityMeasures"]
-                 location='', # optional, if not set the node_uid will be used
+                 command,
+                 location='',
                  date='today',
                  dashboard_root_url='DASHBOARD URL',
-                 dashboard_api_token='DASHBOARD TOKEN',
-                 json_dir='', # Optional - Load Json from this dir (instead of input_operator.operator_out_dir)
+                 dashboard_api_token='',
+                 json_dir='',
                  *args,
                  **kwargs):
+        """
+        :param command: must be in ["createLocation", "createMeasure", "sendPlots", "sendNNtrainingLog", "sendQualityMeasures"]
+        :param location: optional, if not set the node_uid will be used
+        :param dashboard_api_token: if no token is set the racoon_dashboard_username and racoon_dashboard_password airflow variables are used to obtain one
+        :param json_dir: Optional - Load Json from this dir (instead of input_operator.operator_out_dir)
+        """
         
         self.json_dir = json_dir
 
