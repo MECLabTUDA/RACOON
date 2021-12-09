@@ -1,6 +1,7 @@
 from django.db import migrations, models
 from datetime import date, timedelta
 import random
+import os
 
 class Migration(migrations.Migration):
 
@@ -78,49 +79,62 @@ class Migration(migrations.Migration):
     measureDataQuery = measureDataQuery[:-2] + ";"
     plotDataQuery = plotDataQuery[:-2] + ";"
 
+    racoon_nodes = {
+        "uka": "('uka', 50.77687044, 6.04336344, 'Aachen', 'Aachen', 'Klinik für Interventionelle und Diagnostische Radiologie, Uniklinik Aachen', 'Department of Interventional and Diagnostic Radiology, University Hospital Aachen')",
+        "ukau": "('ukau', 48.38473826, 10.83822860, 'Augsburg', 'Augsburg', 'Klinik für Diagnostische und Interventionelle Radiologie und Neuroradiologie, Universitätsklinikum Augsburg', 'Department of Diagnostic and Interventional Radiology and Neuroradiology, University Hospital Augsburg')",
+        "cha": "('cha', 52.52421379, 13.37826490, 'Berlin', 'Berlin', 'Diagnostische und interventionelle Radiologie und Nuklearmedizin, Charite - Universitätsmedizin Berlin', 'Diagnostic and Interventional Radiology and Nuclear Medicine, Charite - Universitätsmedizin Berlin')",
+        "ukbo": "('ukbo', 51.46425904, 7.32764811, 'Bochum', 'Bochum', 'Diagnostische und Interventionelle Radiologie, Universitätsklinikum Bochum', 'Diagnostic and Interventional Radiology, University Hospital Bochum')",
+        "ukb": "('ukb', 50.69864860, 7.10458293, 'Bonn', 'Bonn', 'Klinik für Interventionelle und Diagnostische Radiologie, Universitätsklinikum Bonn', 'Department of Interventional and Diagnostic Radiology, University Hospital Bonn')",
+        "ukdd": "('ukdd', 51.05457243, 13.77649804, 'Dresden', 'Dresden', 'Institut und Poliklinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Dresden', 'Institute and Polyclinic for Diagnostic and Interventional Radiology, University Hospital Dresden')",
+        "ukd": "('ukd', 51.19487959, 6.79162287, 'Düsseldorf', 'Düsseldorf', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Düsseldorf', 'Institute of Diagnostic and Interventional Radiology, University Hospital Düsseldorf')",
+        "fau": "('fau', 49.60098237, 11.00954110, 'Erlangen', 'Erlangen', 'Radiologisches Institut, Universitätsklinikum Erlangen', 'Institute of Radiology, University Hospital Erlangen')",
+        "ume": "('ume', 51.43660872, 6.98899359, 'Essen', 'Essen', 'Institut für Diagnostische und Interventionelle Radiologie und Neuroradiologie, Universitätsklinikum Essen', 'Institute of Diagnostic and Interventional Radiology and Neuroradiology, University Hospital Essen')",
+        "ukf": "('ukf', 50.09570319, 8.66219894, 'Frankfurt', 'Frankfurt', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Frankfurt', 'Institute of Diagnostic and Interventional Radiology, University Hospital Frankfurt')",
+        "ukfr": "('ukfr', 48.00662459, 7.83916806, 'Freiburg', 'Freiburg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Freiburg', 'Department of Radiology, University Hospital Freiburg')",
+        "ukgi": "('ukgi', 50.57433510, 8.66410996, 'Gießen', 'Gießen', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Gießen', 'Department of Interventional and Diagnostic Radiology, University Hospital Gießen')",
+        "umgö": "('umgö', 51.55108778, 9.94278207, 'Göttingen', 'Göttingen', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Göttingen', 'Institute of Diagnostic and Interventional Radiology, University Hospital Göttingen')",
+        "ukgw": "('ukgw', 54.08805474, 13.40513338, 'Greifswald', 'Greifswald', 'Zentrum für Radiologie, Universitätsklinikum Greifswald', 'Center for Radiology, University Hospital Greifswald')",
+        "ukhal": "('ukhal', 51.50167347, 11.93742165, 'Halle', 'Halle', 'Universitätsklinik und Poliklinik für Radiologie, Universitätsklinikum Halle', 'Department of Radiology, University Hospital Halle')",
+        "uke": "('uke', 53.59090704, 9.97397203, 'Hamburg', 'Hamburg', 'Diagnostische und Interventionelle Radiologie und Nuklearmedizin, Universitätsklinikum Hamburg', 'Diagnostic and Interventional Radiology and Nuclear Medicine, University Hospital Hamburg')",
+        "mhh": "('mhh', 52.38277291, 9.80530370, 'Hannover', 'Hanover', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Hannover', 'Institute of Diagnostic and Interventional Radiology, University Hospital Hanover')",
+        "ukhd": "('ukhd', 49.42006772, 8.66750591, 'Heidelberg', 'Heidelberg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Heidelberg und Deutsches Zentrum für Lungenforschung', 'Department of Diagnostic and Interventional Radiology, University Hospital Heidelberg and German Center for Lung Research')",
+        "ukhom": "('ukhom', 49.30391003, 7.34802760, 'Homburg', 'Homburg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Homburg', 'Department of Interventional and Diagnostic Radiology, University Hospital Homburg')",
+        "ukj": "('ukj', 50.88491680, 11.62224410, 'Jena', 'Jena', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Jena', 'Institute of Diagnostic and Interventional Radiology, University Hospital Jena')",
+        "ukki": "('ukki', 54.32983192, 10.14069780, 'Kiel', 'Kiel', 'Klinik für Radiologie und Nuklearmedizin, Universitätsklinikum Schleswig-Holstein Kiel', 'Department of Radiology and Nuclear Medicine, University Hospital Schleswig-Holstein Kiel')",
+        "ukk": "('ukk', 50.92415424, 6.91623605, 'Köln', 'Cologne', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Köln', 'Institute of Diagnostic and Interventional Radiology, University Hospital Köln')",
+        "ukl": "('ukl', 51.33138249, 12.38577654, 'Leipzig', 'Leipzig', 'Klinik und Poliklinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Leipzig', 'Department of Diagnostic and Interventional Radiology, University Hospital Leipzig')",
+        "uklü": "('uklü', 53.83427363, 10.70363872, 'Lübeck', 'Lübeck', 'Klinik für Radiologie und Nuklearmedizin, Universitätsklinikum Schleswig-Holstein, Lübeck', 'Department of Radiology and Nuclear Medicine, University Hospital Schleswig-Holstein, Lübeck')",
+        "ummd": "('ummd', 52.10176414, 11.61899900, 'Magdeburg', 'Magdeburg', 'Universitätsklinik für Radiologie und Nuklearmedizin, Universitätsklinikum Magdeburg', 'Department of Radiology and Nuclear Medicine, University Hospital Magdeburg')",
+        "ukmz": "('ukmz', 49.99424688, 8.25657289, 'Mainz', 'Mainz', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Mainz', 'Institute of Diagnostic and Interventional Radiology, University Hospital Mainz')",
+        "ukma": "('ukma', 49.49217534, 8.48566153, 'Mannheim', 'Mannheim', 'Klinik für Radiologie und Nuklearmedizin, Universitätsklinikum Mannheim', 'Department of Radiology and Nuclear Medicine, University Hospital Mannheim')",
+        "ukmar": "('ukmar', 50.81430421, 8.80812882, 'Marburg', 'Marburg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Marburg', 'Department of Interventional and Diagnostic Radiology, University Hospital Marburg')",
+        "lmu": "('lmu', 48.11105832, 11.47119132, 'LMU München', 'LMU Munich', 'Klinik und Poliklinik für Radiologie, Universitätsklinikum der LMU München', 'Department of Radiology, University Hospital LMU Munich')",
+        "tum": "('tum', 48.13706133, 11.59872312, 'TU München', 'TU Munich', 'Institut für diagnostische und interventionelle Radiologie, Universitätsklinikum der TU München', 'Institute of Diagnostic and Interventional Radiology, University Hospital TU Munich')",
+        "ukm": "('ukm', 51.96058341, 7.59530538, 'Münster', 'Münster', 'Klinik für Radiologie, Universitätsklinikum Münster', 'Department of Radiology, University Hospital Münster')",
+        "ukr": "('ukr', 48.98712489, 12.09067730, 'Regensburg', 'Regensburg', 'Institut für Röntgendiagnostik, Universitätsklinikum Regensburg', 'Department of Radiology, University Hospital Regensburg')",
+        "umr": "('umr', 54.08585624, 12.10212174, 'Rostock', 'Rostock', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Rostock', 'Institute of Diagnostic and Interventional Radiology, University Hospital Rostock')",
+        "ukt": "('ukt', 48.52991697, 9.03750010, 'Tübingen', 'Tübingen', 'Abteilung für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Tübingen', 'Department of Diagnostic and Interventional Radiology, University Hospital Tübingen')",
+        "ukul": "('ukul', 48.42261781, 9.94882937, 'Ulm', 'Ulm', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Ulm', 'Department of Diagnostic and Interventional Radiology, University Hospital Ulm')",
+        "ukwü": "('ukwü', 49.80412905, 9.95638180, 'Würzburg', 'Würzburg', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Würzburg', 'Department of Diagnostic and Interventional Radiology, University Hospital Würzburg')"
+    }
+    node_id = os.getenv("RACOON_NODE_ID", "central")
+    
+    locations_insert_sql = """
+        INSERT INTO `locations`
+        (location_id, latitude, longitude, name_de, name_en, description_de, description_en)
+        VALUES
+    """
+    if node_id == "central":
+        locations_insert_sql += ",".join(racoon_nodes.values())+";"
+    elif node_id in racoon_nodes:
+        locations_insert_sql += racoon_nodes[node_id] + ";"
+    else:
+        raise Exception(f"Invalid racoon node id: {node_id}")
+
     # 1. Run query to create all locations
-    operations = [        
-        migrations.RunSQL("""
-            INSERT INTO `locations`
-            (location_id, latitude, longitude, name_de, name_en, description_de, description_en)
-            VALUES
-            ('uka', 50.77687044, 6.04336344, 'Aachen', 'Aachen', 'Klinik für Interventionelle und Diagnostische Radiologie, Uniklinik Aachen', 'Department of Interventional and Diagnostic Radiology, University Hospital Aachen'),
-            ('ukau', 48.38473826, 10.83822860, 'Augsburg', 'Augsburg', 'Klinik für Diagnostische und Interventionelle Radiologie und Neuroradiologie, Universitätsklinikum Augsburg', 'Department of Diagnostic and Interventional Radiology and Neuroradiology, University Hospital Augsburg'),
-            ('cha', 52.52421379, 13.37826490, 'Berlin', 'Berlin', 'Diagnostische und interventionelle Radiologie und Nuklearmedizin, Charite - Universitätsmedizin Berlin', 'Diagnostic and Interventional Radiology and Nuclear Medicine, Charite - Universitätsmedizin Berlin'),
-            ('ukbo', 51.46425904, 7.32764811, 'Bochum', 'Bochum', 'Diagnostische und Interventionelle Radiologie, Universitätsklinikum Bochum', 'Diagnostic and Interventional Radiology, University Hospital Bochum'),
-            ('ukb', 50.69864860, 7.10458293, 'Bonn', 'Bonn', 'Klinik für Interventionelle und Diagnostische Radiologie, Universitätsklinikum Bonn', 'Department of Interventional and Diagnostic Radiology, University Hospital Bonn'),
-            ('ukdd', 51.05457243, 13.77649804, 'Dresden', 'Dresden', 'Institut und Poliklinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Dresden', 'Institute and Polyclinic for Diagnostic and Interventional Radiology, University Hospital Dresden'),
-            ('ukd', 51.19487959, 6.79162287, 'Düsseldorf', 'Düsseldorf', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Düsseldorf', 'Institute of Diagnostic and Interventional Radiology, University Hospital Düsseldorf'),
-            ('fau', 49.60098237, 11.00954110, 'Erlangen', 'Erlangen', 'Radiologisches Institut, Universitätsklinikum Erlangen', 'Institute of Radiology, University Hospital Erlangen'),
-            ('ume', 51.43660872, 6.98899359, 'Essen', 'Essen', 'Institut für Diagnostische und Interventionelle Radiologie und Neuroradiologie, Universitätsklinikum Essen', 'Institute of Diagnostic and Interventional Radiology and Neuroradiology, University Hospital Essen'),
-            ('ukf', 50.09570319, 8.66219894, 'Frankfurt', 'Frankfurt', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Frankfurt', 'Institute of Diagnostic and Interventional Radiology, University Hospital Frankfurt'),
-            ('ukfr', 48.00662459, 7.83916806, 'Freiburg', 'Freiburg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Freiburg', 'Department of Radiology, University Hospital Freiburg'),
-            ('ukgi', 50.57433510, 8.66410996, 'Gießen', 'Gießen', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Gießen', 'Department of Interventional and Diagnostic Radiology, University Hospital Gießen'),
-            ('umgö', 51.55108778, 9.94278207, 'Göttingen', 'Göttingen', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Göttingen', 'Institute of Diagnostic and Interventional Radiology, University Hospital Göttingen'),
-            ('ukgw', 54.08805474, 13.40513338, 'Greifswald', 'Greifswald', 'Zentrum für Radiologie, Universitätsklinikum Greifswald', 'Center for Radiology, University Hospital Greifswald'),
-            ('ukhal', 51.50167347, 11.93742165, 'Halle', 'Halle', 'Universitätsklinik und Poliklinik für Radiologie, Universitätsklinikum Halle', 'Department of Radiology, University Hospital Halle'),
-            ('uke', 53.59090704, 9.97397203, 'Hamburg', 'Hamburg', 'Diagnostische und Interventionelle Radiologie und Nuklearmedizin, Universitätsklinikum Hamburg', 'Diagnostic and Interventional Radiology and Nuclear Medicine, University Hospital Hamburg'),
-            ('mhh', 52.38277291, 9.80530370, 'Hannover', 'Hanover', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Hannover', 'Institute of Diagnostic and Interventional Radiology, University Hospital Hanover'),
-            ('ukhd', 49.42006772, 8.66750591, 'Heidelberg', 'Heidelberg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Heidelberg und Deutsches Zentrum für Lungenforschung', 'Department of Diagnostic and Interventional Radiology, University Hospital Heidelberg and German Center for Lung Research'),
-            ('ukhom', 49.30391003, 7.34802760, 'Homburg', 'Homburg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Homburg', 'Department of Interventional and Diagnostic Radiology, University Hospital Homburg'),
-            ('ukj', 50.88491680, 11.62224410, 'Jena', 'Jena', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Jena', 'Institute of Diagnostic and Interventional Radiology, University Hospital Jena'),
-            ('ukki', 54.32983192, 10.14069780, 'Kiel', 'Kiel', 'Klinik für Radiologie und Nuklearmedizin, Universitätsklinikum Schleswig-Holstein Kiel', 'Department of Radiology and Nuclear Medicine, University Hospital Schleswig-Holstein Kiel'),
-            ('ukk', 50.92415424, 6.91623605, 'Köln', 'Cologne', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Köln', 'Institute of Diagnostic and Interventional Radiology, University Hospital Köln'),
-            ('ukl', 51.33138249, 12.38577654, 'Leipzig', 'Leipzig', 'Klinik und Poliklinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Leipzig', 'Department of Diagnostic and Interventional Radiology, University Hospital Leipzig'),
-            ('uklü', 53.83427363, 10.70363872, 'Lübeck', 'Lübeck', 'Klinik für Radiologie und Nuklearmedizin, Universitätsklinikum Schleswig-Holstein, Lübeck', 'Department of Radiology and Nuclear Medicine, University Hospital Schleswig-Holstein, Lübeck'),
-            ('ummd', 52.10176414, 11.61899900, 'Magdeburg', 'Magdeburg', 'Universitätsklinik für Radiologie und Nuklearmedizin, Universitätsklinikum Magdeburg', 'Department of Radiology and Nuclear Medicine, University Hospital Magdeburg'),
-            ('ukmz', 49.99424688, 8.25657289, 'Mainz', 'Mainz', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Mainz', 'Institute of Diagnostic and Interventional Radiology, University Hospital Mainz'),
-            ('ukma', 49.49217534, 8.48566153, 'Mannheim', 'Mannheim', 'Klinik für Radiologie und Nuklearmedizin, Universitätsklinikum Mannheim', 'Department of Radiology and Nuclear Medicine, University Hospital Mannheim'),
-            ('ukmar', 50.81430421, 8.80812882, 'Marburg', 'Marburg', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Marburg', 'Department of Interventional and Diagnostic Radiology, University Hospital Marburg'),
-            ('lmu', 48.11105832, 11.47119132, 'LMU München', 'LMU Munich', 'Klinik und Poliklinik für Radiologie, Universitätsklinikum der LMU München', 'Department of Radiology, University Hospital LMU Munich'),
-            ('tum', 48.13706133, 11.59872312, 'TU München', 'TU Munich', 'Institut für diagnostische und interventionelle Radiologie, Universitätsklinikum der TU München', 'Institute of Diagnostic and Interventional Radiology, University Hospital TU Munich'),
-            ('ukm', 51.96058341, 7.59530538, 'Münster', 'Münster', 'Klinik für Radiologie, Universitätsklinikum Münster', 'Department of Radiology, University Hospital Münster'),
-            ('ukr', 48.98712489, 12.09067730, 'Regensburg', 'Regensburg', 'Institut für Röntgendiagnostik, Universitätsklinikum Regensburg', 'Department of Radiology, University Hospital Regensburg'),
-            ('umr', 54.08585624, 12.10212174, 'Rostock', 'Rostock', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Rostock', 'Institute of Diagnostic and Interventional Radiology, University Hospital Rostock'),
-            ('ukt', 48.52991697, 9.03750010, 'Tübingen', 'Tübingen', 'Abteilung für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Tübingen', 'Department of Diagnostic and Interventional Radiology, University Hospital Tübingen'),
-            ('ukul', 48.42261781, 9.94882937, 'Ulm', 'Ulm', 'Klinik für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Ulm', 'Department of Diagnostic and Interventional Radiology, University Hospital Ulm'),
-            ('ukwü', 49.80412905, 9.95638180, 'Würzburg', 'Würzburg', 'Institut für Diagnostische und Interventionelle Radiologie, Universitätsklinikum Würzburg', 'Department of Diagnostic and Interventional Radiology, University Hospital Würzburg');
-        """),        
+    operations = [
+
+        migrations.RunSQL(locations_insert_sql),        
         # migrations.RunSQL("""
         #     INSERT INTO `measures`
         #     (measure_id, public_visible, is_main, is_color_default, is_size_default, is_open_ended, name_de, name_en, description_de, description_en, lower_bound, upper_bound)
