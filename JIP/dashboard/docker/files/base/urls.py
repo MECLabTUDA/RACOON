@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/avg/', views.AverageDataView, name='avg-data'),
     path('api/export/', views.ExportDataView, name='data-export'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-token-auth/', views.CustomAuthToken.as_view()),
     url(r'^user_login/$', views.user_login, name='user_login'),
     url(r'^user_logout/$', views.user_logout, name='user_logout'),
 ]
