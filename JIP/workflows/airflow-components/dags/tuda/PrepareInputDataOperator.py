@@ -73,7 +73,12 @@ class PrepareInputDataOperator(KaapanaPythonBaseOperator):
                     print(f"Preparing Segmentation")
                     print(f"   seriesUID: {series_uid} ")
                     print(f"   targetDir: {seg_target_dir}") 
-                    meta_data[f'{self.dir_cntr:04d}'] = HelperElasticsearch.get_series_metadata(series_uid)
+                    metadata_json_path = os.path.join(batch_element_dir, self.src_meta_operator.operator_out_dir, f"{series_uid}.json")
+                    print(f"Metadata JSON: {metadata_json_path}")
+                    with open(metadata_json_path) as fp:
+                        meta_data[f'{self.dir_cntr:04d}'] = json.load(fp)
+                    # tuda_calc_qualty_measures might be triggered after images are in PACS but before metadata are in meta-index
+                    #meta_data[f'{self.dir_cntr:04d}'] = HelperElasticsearch.get_series_metadata(series_uid)
                     if not os.path.exists(seg_target_dir):
                         os.makedirs(seg_target_dir)
                     pydicom.dcmwrite(os.path.join(seg_target_dir, f'{sop_inst_uid}.dcm'), incoming_dcm)
@@ -224,6 +229,7 @@ class PrepareInputDataOperator(KaapanaPythonBaseOperator):
                  pacs_dcmweb_host='http://dcm4chee-service.store.svc',
                  pacs_dcmweb_port='8080',
                  aetitle="KAAPANA",
+                 src_meta_operator="",
                  *args,
                  **kwargs):
 
@@ -232,6 +238,7 @@ class PrepareInputDataOperator(KaapanaPythonBaseOperator):
         self.dir_cntr = 1
         self.download_series_seg_list = []
         self.download_series_img_list = []
+        self.src_meta_operator = src_meta_operator
 
         super().__init__(
             dag,

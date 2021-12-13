@@ -7,6 +7,7 @@ from tuda.Json2DcmSrOperator import Json2DcmSrOperator
 from tuda.MergeQmOutputsOperator import MergeQmOutputsOperator
 from kaapana.operators.DcmSendOperator import DcmSendOperator
 from kaapana.operators.LocalWorkflowCleanerOperator import LocalWorkflowCleanerOperator
+from kaapana.operators.LocalDcm2JsonOperator import LocalDcm2JsonOperator
 
 from airflow.utils.log.logging_mixin import LoggingMixin
 from airflow.utils.dates import days_ago
@@ -49,10 +50,11 @@ dag = DAG(
 
 
 get_input = LocalGetInputDataOperator(dag=dag)
+extract_metadata = LocalDcm2JsonOperator(dag=dag, input_operator=get_input, delete_private_tags=True)
 
 # The following block does not fit into the regular JIP directory structure
 # =========================================================================
-prepare_data = PrepareInputDataOperator(dag=dag, input_operator=get_input)
+prepare_data = PrepareInputDataOperator(dag=dag, input_operator=get_input, src_meta_operator=extract_metadata)
 transform_data = Dcm2ItkOperator(dag=dag, input_operator=prepare_data, output_format='nii.gz')
 # List of QM Operators
 qm_artifacts = QmArtifactsOperator(dag=dag, input_operator=transform_data)
@@ -66,4 +68,4 @@ dcm_send = DcmSendOperator(dag=dag, input_operator=json_to_dcm, level='element')
 clean = LocalWorkflowCleanerOperator(dag=dag, clean_workflow_dir=True)
 
 
-get_input >> prepare_data >> transform_data >> [qm_artifacts, qm_dice_pred] >> qm_result_merger >> json_to_dcm >> dcm_send >> clean
+get_input >> extract_metadata >> prepare_data >> transform_data >> [qm_artifacts, qm_dice_pred] >> qm_result_merger >> json_to_dcm >> dcm_send >> clean
