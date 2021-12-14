@@ -56,7 +56,7 @@ class AggregateQmDataOperator(KaapanaPythonBaseOperator):
 
                     global_counter[date] += 1
 
-                    for m_name, m_val in json_data.items():
+                    for m_name, m_val in json_data['measures'].items():
                         if date not in aggregation_results:
                             aggregation_results[date] = {}
                             aggregation_counter[date] = {}
@@ -141,7 +141,7 @@ class AggregateQmDataOperator(KaapanaPythonBaseOperator):
                     if "seg_date" in json_data:
                         json_data.pop("seg_date")
 
-                    for m_name, m_val in json_data.items():
+                    for m_name, m_val in json_data['measures'].items():
                         if m_name not in aggregation_results:
                             aggregation_results[m_name] = 0
                             aggregation_counter[m_name] = 0
