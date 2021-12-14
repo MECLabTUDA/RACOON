@@ -69,15 +69,15 @@ Measure:
 class SendDataToWebDashboardOperator(KaapanaPythonBaseOperator):   
 
     def prepareQmJson(self, json_data):
-        json_date = json_data.pop('date')
+        json_date = json_data['measures'].pop('date')
 
         # Transform the QM Json into the correct format for the HTTP request
         measure_data = []
-        for m_name, m_val in json_data.items():
+        for m_name, m_val in json_data['measures'].items():
             measure_data.append({'measure': m_name, 'value': m_val})
-
+        
         req_data = {}
-        req_data['location'] = self.location
+        req_data['location'] = json_data['location']
         req_data['date'] = json_date
         req_data['plotData'] = []
         req_data['measureData'] = measure_data

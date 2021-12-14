@@ -63,7 +63,11 @@ for qm_json in all_qm_jsons:
                 json_dict.update({'patient_id': ref_meta_data['00100020 PatientID_keyword']})
                 
                 qm_data['seg_date'] = ref_meta_data['00080021 SeriesDate_date']
-                json_dict.update({'data': json.dumps(qm_data)})
+                payload = {
+                    'location': json_dict['location'],
+                    'measures': qm_data
+                }
+                json_dict.update({'data': json.dumps(payload)})
             
                 element_output_dir = os.path.join('/', os.environ['WORKFLOW_DIR'], os.environ['BATCH_NAME'], ref_meta_data['0020000E SeriesInstanceUID_keyword'], os.environ['OPERATOR_OUT_DIR'])
                     
@@ -123,7 +127,11 @@ for qm_json in all_qm_jsons:
                 instance_uid = pydicom.uid.generate_uid()     
             json_dict.update({'instance_uid': instance_uid})
             json_dict.update({'location': os.environ['LOCATION']})
-            json_dict.update({'data': json.dumps(qm_data_json)})
+            payload = {
+                'location': json_dict['location'],
+                'measures': qm_data_json
+            }
+            json_dict.update({'data': json.dumps(payload)})
 
             # Add Study and Patient UID from passed env vars:
             study_uid = os.environ['STUDY_UID']
