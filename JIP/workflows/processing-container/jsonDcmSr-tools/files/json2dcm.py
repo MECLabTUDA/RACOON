@@ -62,8 +62,8 @@ for qm_json in all_qm_jsons:
                 json_dict.update({'ref_series_uid': ref_meta_data['0020000E SeriesInstanceUID_keyword']})
                 json_dict.update({'patient_id': ref_meta_data['00100020 PatientID_keyword']})
                 
-                qm_data['seg_date'] = ref_meta_data['00080021 SeriesDate_date']
                 payload = {
+                    'seg_date': ref_meta_data['00080021 SeriesDate_date'],
                     'location': json_dict['location'],
                     'measures': qm_data
                 }
