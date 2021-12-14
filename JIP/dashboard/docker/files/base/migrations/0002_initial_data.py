@@ -134,7 +134,21 @@ class Migration(migrations.Migration):
     # 1. Run query to create all locations
     operations = [
 
-        migrations.RunSQL(locations_insert_sql),        
+        migrations.RunSQL(locations_insert_sql),
+        migrations.RunSQL("""
+            INSERT INTO `measures`
+            (measure_id, public_visible, is_main, is_color_default, is_size_default, is_open_ended, name_de, name_en, description_de, description_en, lower_bound, upper_bound)
+            VALUES
+            ('spike',1,1,0,0,1,'', '','spike', 'spike',0,0),
+            ('resolution',1,1,0,0,1,'', '','resolution', 'resolution',0,0),
+            ('noise',1,1,0,0,1,'', '','noise', 'noise',0,0),
+            ('motion',1,1,0,0,1,'', '','motion', 'motion',0,0),
+            ('ghosting',1,1,0,0,1,'', '','ghosting', 'ghosting',0,0),
+            ('count_total',1,1,0,0,1,'', '','count_total', 'count_total',0,0),
+            ('blur',1,1,0,0,1,'', '','blur', 'blur',0,0),
+            ('LFC',1,1,0,0,1,'', '','LFC', 'LFC',0,0);
+        """)
+
         # migrations.RunSQL("""
         #     INSERT INTO `measures`
         #     (measure_id, public_visible, is_main, is_color_default, is_size_default, is_open_ended, name_de, name_en, description_de, description_en, lower_bound, upper_bound)
