@@ -50,7 +50,7 @@ dag = DAG(
 
 
 get_input = LocalGetInputDataOperator(dag=dag)
-extract_metadata = LocalDcm2JsonOperator(dag=dag, input_operator=get_input, delete_private_tags=True)
+extract_metadata = LocalDcm2JsonOperator(dag=dag, input_operator=get_input, delete_private_tags=False)
 
 # The following block does not fit into the regular JIP directory structure
 # =========================================================================
