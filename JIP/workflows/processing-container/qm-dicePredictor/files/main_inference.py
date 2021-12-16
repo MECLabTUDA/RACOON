@@ -58,11 +58,11 @@ if __name__ == "__main__":
     print('Building environmental variables..')
     # The environmental vars will later be automatically set by the workflow that triggers the docker container
     # data_dirs (for inference)
-    #os.environ["WORKFLOW_DIR"] = os.path.join(JIP_dir, 'data_dirs')
-    #os.environ["OPERATOR_IN_DIR"] = "input"
-    #os.environ["OPERATOR_OUT_DIR"] = "output"
-    #os.environ["OPERATOR_TEMP_DIR"] = "temp"
-    #os.environ["PERSISTENT_DIR"] = os.path.join(JIP_dir, 'data_dirs', 'persistent') # pre-trained models
+    os.environ["WORKFLOW_DIR"] = os.path.join(JIP_dir, 'data_dirs')
+    os.environ["OPERATOR_IN_DIR"] = "input"
+    os.environ["OPERATOR_OUT_DIR"] = "output"
+    os.environ["OPERATOR_TEMP_DIR"] = "temp"
+    os.environ["PERSISTENT_DIR"] = os.path.join(JIP_dir, 'data_dirs', 'persistent') # pre-trained models
 
     # preprocessed_dirs (for preprocessed data (output of this workflow = input for main workflow)
     os.environ["PREPROCESSED_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'preprocessed_dirs')
@@ -101,3 +101,14 @@ if __name__ == "__main__":
     inferred, error = do_inference(config)
     if not inferred:
         print('Inference could not be performed. The following error occured: {}.'.format(error))
+
+
+
+    # -- Christians Part -- #
+    quantifier = IntBasedQuantifier(label=label)
+    # Preprocess data
+    if preprocess:
+        quantifier.preprocess_data()
+
+    # Do inference
+    quantifier.get_quality()    
