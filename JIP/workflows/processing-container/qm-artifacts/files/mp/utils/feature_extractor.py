@@ -51,7 +51,7 @@ def get_array_of_dicescores(seg):
 
 def get_dice_averages(img,seg,props):
     '''Computes the average dice score for a connected component of the 
-    given img-seg pair. 
+    given img-seg pair.
     STILL COMPUTED BUT NOT USED ANYMORE: Also computes the average differences between the dice scores 
     and computes that average, because it was observed, that in bad artificial bad segmentations,
     these dice scores had a more rough graph, then good segmentations, thus it is used as feature.
@@ -101,6 +101,10 @@ def mean_var_big_comp(img,seg):
 # function to compute the percentage of segmented tissue within the lung
 def segmentation_in_lung(seg,lung_seg):
     return np.dot(torch.flatten(seg),torch.flatten(lung_seg))/torch.sum(seg)
+
+# How much of the lung is infected?
+def ratio_lung_with_lesions(seg,lung_seg):
+    return np.dot(torch.flatten(seg),torch.flatten(lung_seg))/torch.sum(lung_seg)
 
 class Feature_extractor():
     '''A class for extracting feature of img-seg pairs and get arrays of features
@@ -159,7 +163,7 @@ class Feature_extractor():
             dice_seg_lung = segmentation_in_lung(seg,lung_seg)
             return float(dice_seg_lung)
 
-    def compute_features_id(self,id,features='all'):
+    def compute_features_id(self,id,features='all', other_features=['ggo_ratio']):
         '''Computes all features for the img-seg and img-pred pairs (if existing)
         and saves them in the preprocessed_dir/.../id/...
         Args:
@@ -180,7 +184,7 @@ class Feature_extractor():
         
         #get the features for the predictions
         all_pred_path = os.path.join(id_path,'pred')
-        if  os.path.exists(all_pred_path):
+        if os.path.exists(all_pred_path):
             for model in os.listdir(all_pred_path):
                 mask_path_short = os.path.join(id_path,'pred',model)
                 self.save_feat_dict_from_paths(img_path,mask_path_short,lung_seg_path,features)
@@ -200,6 +204,11 @@ class Feature_extractor():
             feat_dict = {}
         for feat in features:
             feat_dict[feat] = self.get_feature(feat,img,seg,lung_seg)
+
+        if other_features:
+            if 'ggo_ratio' in other_features:
+                ggo_ratio = ratio_lung_with_lesions(seg,lung_seg)
+                feat_dict['ggo_ratio'] =float(ggo_ratio)
 
         #save the features in a json file 
         with open (feature_save_path,'w') as f:
@@ -286,6 +295,23 @@ class Feature_extractor():
                 else:
                     feature_vec.append(feature)
         return feature_vec
+
+    def read_feature_vector_keep_others(self,feature_path, other_features=['ggo_ratio']):
+        feature_vec = []
+        other_features_dict = dict()
+        with open(feature_path,'r') as file:
+            feat_dict = json.load(file)
+            for feature_name in self.features:
+                feature = feat_dict[feature_name]
+                if isinstance(feature,list): 
+                    for entry in feature:
+                        feature_vec.append(entry)
+                else:
+                    feature_vec.append(feature)
+            if other_features:
+                for feature_name in other_features:
+                    other_features_dict[feature_name] = feat_dict[feature_name]
+        return feature_vec, other_features_dict
 
     def read_prediction_label(self,label_path):
         with open(label_path,'r') as file:
