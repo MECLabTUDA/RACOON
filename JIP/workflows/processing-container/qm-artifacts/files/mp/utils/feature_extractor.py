@@ -140,7 +140,10 @@ class Feature_extractor():
         '''
         component_iterator = Component_Iterator(img,seg)
         original_threshhold = component_iterator.threshold
+        seg_is_empty = np.count_nonzero(seg) < 1
         if feature == 'dice_scores':
+            if seg_is_empty:
+                return 1
             dice_metrices = component_iterator.iterate(get_dice_averages)
             if not dice_metrices:
                 print('Image only has very small components')
@@ -154,12 +157,18 @@ class Feature_extractor():
             dice_metrices = np.mean(dice_metrices,0)
             return dice_metrices[0]
         if feature == 'connected_components':
+            if seg_is_empty:
+                return 0
             _,number_components = label(seg,return_num=True,connectivity=3)
             return number_components
         if feature == 'gauss_params':
+            if seg_is_empty:
+                return 0
             mean,_ = mean_var_big_comp(img,seg)
             return mean
         if feature == 'seg_in_lung':
+            if seg_is_empty:
+                return 1
             dice_seg_lung = segmentation_in_lung(seg,lung_seg)
             return float(dice_seg_lung)
 

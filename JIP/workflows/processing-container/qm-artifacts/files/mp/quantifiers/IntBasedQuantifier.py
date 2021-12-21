@@ -45,12 +45,12 @@ class IntBasedQuantifier(SegImgQualityQuantifier):
             id_dict = dict()
             path_to_features = os.path.join(self.work_path,id,'seg','features.json')
             #feature_vec = self.feat_extr.read_feature_vector(path_to_features)
-            feature_vec, other_features_dict = self.feat_extr.read_feature_vector_keep_others(path_to_features, other_features=['ggo_ratio'])
+            feature_vec, other_features_dict = self.feat_extr.read_feature_vector_keep_others(path_to_features, other_features=['ggo_ratio', 'dice_scores', 'connected_components', 'seg_in_lung'])
 
             prediction = self.dice_pred.predict([feature_vec])[0]
             id_dict['dice_pred']=prediction
 
-            # Adding the new features (right now only ggo_ratio)
+            # Adding the new features (right now only ggo_ratio + other features that the Dice predictor uses)
             for key, value in other_features_dict.items():
                 id_dict[key] = value
 

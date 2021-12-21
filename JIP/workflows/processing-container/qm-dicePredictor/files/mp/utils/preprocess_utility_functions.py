@@ -221,6 +221,7 @@ def downsize_img_seg_pred(id_path,img):
     #downsize the segmentation 
     seg_path = os.path.join(id_path,'seg','001.nii.gz')
     seg = sitk.GetArrayFromImage(sitk.ReadImage(seg_path))
+    seg = seg.astype(np.int16)
     seg = torch.from_numpy(seg)
     seg.unsqueeze_(0)
     seg = seg.type(torch.float64)
